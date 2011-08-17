@@ -452,7 +452,8 @@ ajsf.aeforms = {
 						e3.innerHTML = e3.innerHTML + html;
 						a.push(id);
 						e2.value = a.join(',') ;
-					} else {
+					} else if (_('#'+inputID+'/'+id).tween )
+					{
 						_('#'+inputID+'/'+id).tween({opacity:0},{opacity:1},"regularEaseOut",0.5);
 					}
 				}
@@ -520,6 +521,30 @@ ajsf.aeforms = {
 						});
 						break;
 				}
+			}
+			
+			if ( input.hasAt('data-plugin') )
+			{
+				var plugin = input.getAt('data-plugin').split('/'),
+					plugfilename = plugin.shift(),
+					plugname = plugin.shift(),
+					ii = 0,
+					param,
+					options = {} ,
+					ll = plugin.length ;
+				
+				for ( ii ; ii < ll ; ii++ )
+				{
+					param = plugin[ii].split(':') ;
+					options[param[0]] = options[param[1]] ;
+				}
+				
+				options.input = input ;
+
+				ajsf.load(plugfilename);
+				ajsf.ready(function(){
+					input.dedicatedPlugin = new ajsf[plugname] ( options ) ;
+				});
 			}
 			
 			// It's the same behavior as the HTML5 placeholder behavior
@@ -837,7 +862,7 @@ ajsf.aeforms = {
 							e.empty () ;
 							e.appendChild(elem);
 						} else {
-							this.appendChild(elem) ;
+							this.insertBefore(elem, this.firstChild) ;
 						}
 					}
 					

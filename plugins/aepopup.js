@@ -572,7 +572,7 @@
 		construct: function(element)
 		{
 			this.element = element ;
-			var e = this._create () ;
+			this._create () ;
 			this._refreshDisplay () ;
 		},
 		
@@ -651,6 +651,7 @@
 				t = 0 ,
 				at = 0;
 			
+			
 			if ( !e.getLeft ){
 				return;
 			}
@@ -662,10 +663,10 @@
 			
 			this._container.show () ;
 			
-			al = e.getLeft(true)-a.w()-10;
+			al = e.getLeft(true) + e.w() ;
 			at = e.getTop(true) ;
 			
-			l = e.getLeft(true)-c.w()-a.w() ;
+			l = e.getLeft(true) + e.w() + a.w () ;
 			t = e.getTop(true)-50 ;
 			
 			

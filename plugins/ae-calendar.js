@@ -7,32 +7,118 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 
 
 
-ajsf.forms.Calendar = ajsf.popup.InnerPopup.extend({
+ajsf.Calendar = ajsf.popup.InnerPopup.extend({
 	
 	m: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 	
 	n: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 	
-	construct: function ( input )
+	construct: function ( options )
 	{
-		this._super(input);
 		
+		this._super(options.input);
 		
+		this.setInput(input) ;
 		
+		this.getContainer ().hide () ;
+		
+		this._startYear = 1901 ;
+
+		this._endYear = 2015 ;
 		
 		var now = new Date () ;
+		
 		this.update ( now.getFullYear (), now.getMonth()+1, now.getDate() ) ;
 		
 	},
-	function getRealYear(dateObj)
+	
+
+	/*
+	 	Function: setInput
+	 	
+	 	Set the input element associated with the Calendar popup
+	 	
+	 	Parameters:
+	 		input - [HTMLInputElement] the input element to fill with generated date
+	 	
+	 	Returns:
+		Current instance for chained commands on this element
+	 */
+	setInput: function ( input )
+	{
+		if ( this._input != null )
+		{
+			this._input = null ;
+			
+			this._button = null ;
+		}
+		
+		this._input = input ;
+		
+		if ( !this._input )
+		{
+			return this;
+		}
+	},
+
+	/*
+	 	Function: getInput
+	 	
+		Returns the input element associated with the string generator
+	 	
+	 	Returns:
+		The input element associated with the string generator
+	 */
+	getInput: function ( )
+	{
+		return this._input ;
+	},
+
+	
+	/*
+		Function: setStartYear
+		
+		Set the starting year in calendar selection. Default is 1901.
+		
+		Parameters:
+			startYear - [int] The starting year in calendar selection (e.g. 1901, 1929, 2098)
+		
+		Returns:
+		Current instance for chained commands on this element
+	 */
+	setStartYear: function ( startYear )
+	{
+		this._startYear = parseInt(startYear);
+		
+		return this;
+	},
+	
+	/*
+		Function: getStartYear
+		
+		Returns:
+		Current instance for chained commands on this element
+	 */
+	getStartYear: function ()
+	{
+		return this._startYear ;
+	},
+	
+	
+	getRealYear: function (dateObj)
 	{
 		return (dateObj.getYear() % 100) + (((dateObj.getYear() % 100) < 39) ? 2000 : 1900);
+	},
+	
+	update: function ( year, month, day )
+	{
+		
 	}
 	
 
 
 });
-
+/*
 ajsf.forms.Calendar.styles.Box ;
 
 var _panelID="CalendarPanel";
@@ -309,5 +395,5 @@ function BuildColor(r, g, b) {
 
 
 
-
+*/
 }) ();

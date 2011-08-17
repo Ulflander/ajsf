@@ -2187,7 +2187,7 @@ var ajsf = {
 			{
 				plugin = this.BASE_URL + 'plugins/' + plugin + ".js" ;
 			}
-
+			
 			for ( x = 0; x < l3; x++ )
 			{
 				if ( scripts[x].getAttribute ("src") == plugin )
@@ -3659,6 +3659,7 @@ var ajsf = {
 			
 			// flag this function so we don't do the same thing twice
 			arguments.callee.done = true;
+			
 			
 			i2 () ;
 		};
