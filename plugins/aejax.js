@@ -205,7 +205,7 @@
 
 			if ( this.aenoaMode )
 			{
-				parameters = "protocol=AenoaServerProtocol&__SERVICE_ID="+this._service+"&__DATA="+this._getFormattedData() ;
+				parameters = "protocol=AenoaServerProtocol&service="+this._service+"&data="+this._getFormattedData() ;
 			} else {
 				parameters = this._getFormattedData();
 			}
@@ -283,10 +283,10 @@
 				{
 					this._js = $.aejson.fromjson ( this._sr ) ;
 					
-					this._success = this._js['__SUCCESS']?this._js['__SUCCESS'] : false ;
+					this._success = this._js['success']?this._js['success'] : false ;
 					
 					if ( _('#__SESS_ID') )
-						_('#__SESS_ID').value = this._js['__SID'] ;
+						_('#__SESS_ID').value = this._js['sid'] ;
 				}
 				
 				if ( this.xhr.getResponseHeader('X-AeServer-redirection') )
@@ -296,7 +296,7 @@
 				
 				if ( is(this.onEnd,"function") )
 				{
-					this.onEnd (this._success,(this.aenoaMode ? this._js['__DATA'] : this._sr ) ) ;
+					this.onEnd (this._success,(this.aenoaMode ? this._js['data'] : this._sr ) ) ;
 				}
 			}
 		},
