@@ -18,13 +18,19 @@ ajsf.Calendar = ajsf.popup.InnerPopup.extend({
 		
 		this._super(options.input);
 		
-		this.setInput(input) ;
+		this.setInput(options.input) ;
 		
 		this.getContainer ().hide () ;
 		
 		this._startYear = 1901 ;
 
 		this._endYear = 2015 ;
+		
+		this._currentYear = 2011 ;
+		
+		this._currentMonth = 8 ;
+		
+		this._currentDay = 31 ;
 		
 		var now = new Date () ;
 		
@@ -58,6 +64,27 @@ ajsf.Calendar = ajsf.popup.InnerPopup.extend({
 		if ( !this._input )
 		{
 			return this;
+		}
+		
+		var cal = this ,
+			delCheck = ajsf.delegate(this,this._checkHide);
+		
+		this._input.on('focus',function(e){
+			cal.getContainer().show () ;
+		});
+
+		this._input.on('blur',function(e){
+	//		cal.getContainer().hide () ;
+		});
+		
+		return cal ;
+	},
+	
+	_checkHide: function ()
+	{
+		if ( this._input && this.getContainer() )
+		{
+			
 		}
 	},
 
@@ -112,11 +139,155 @@ ajsf.Calendar = ajsf.popup.InnerPopup.extend({
 	
 	update: function ( year, month, day )
 	{
+		this.getContainer().empty() ;
 		
-	}
+		this.buildHeader(year, month);
+
+		this.createTable(year, month);
+	},
 	
+	gotoPrevMonth: function ()
+	{
+		this._currentMonth -- ;
+		
+		if ( this._currentMonth == 0 )
+		{
+			this._currentMonth = 12 ;
+			this._currentYear -- ;
+		}
+		this.update(this._currentYear, this._currentMonth, this._currentDay);
+	},
 
+	gotoNextMonth: function ()
+	{
+		this._currentMonth ++ ;
+		
+		if ( this._currentMonth == 13 )
+		{
+			this._currentMonth = 1 ;
+			this._currentYear ++ ;
+		}
+		this.update(this._currentYear, this._currentMonth, this._currentDay);
+	},
+	
+	buildHeader: function ( year , month )
+	{
+		var prevButton = this.getButton('<<'),
+			nextButton = this.getButton('>>'),
+			yearSpan = this.getSpan(year,'year'),
+			monthSpan = this.getSpan(month,'month'),
+			cal = this ;
+		
+		prevButton.on('click',ajsf.delegate(this,function(e){
+			ajsf.prevent(e);
+			ajsf.ltr?this.gotoPrevMonth():this.gotoNextMonth() ;
+		}));
 
+		nextButton.on('click',ajsf.delegate(this,function(e){
+			ajsf.prevent(e);
+			ajsf.ltr?this.gotoNextMonth():this.gotoPrevMonth() ;
+		}));
+		
+		this.getContainer().append(
+			ajsf.create(null,'div','expanded cal-header').append(
+				prevButton,
+				monthSpan,
+				yearSpan,
+				nextButton
+			)
+		) ;
+	},
+	
+	createTable: function ( year, month )
+	{
+		var daysCount = this.daysInMonth(year, month),
+			totCells = daysCount,
+			cw = 30 ,
+			ch = 30,
+			table = ajsf.create(null,'table'),
+			day = 1,
+			skip = 0,
+			tot = 1,
+			d = new Date(),
+			cell,
+			row ;
+		
+		if ( this._currentDay > daysCount )
+		{
+			this._currentDay = daysCount ;
+		}
+
+		d.setYear(year);
+		d.setMonth(month-1);
+		d.setDate(0);
+		skip = d.getDay () ;
+		
+		
+		totCells += skip ;
+		
+		table.setAt("border", "0")
+			.setAt("cellpadding", "0")
+			.setAt("cellspacing", "0");
+		
+		while (tot <= totCells) {
+			if (((tot-1)%7) == 0 || !row) {
+				row=table.insertRow(table.rows.length);
+			}
+			for (var i=1; i<=7; i++) {
+				if (day > daysCount)
+					break;
+					
+				tot++;
+				cell=row.insertCell(row.cells.length);
+				if ( skip > 0 )
+				{
+					cell.innerHTML = '&nbsp;';
+					skip--;
+					continue;
+				}
+				cell.setAttribute("width", cw+"");
+				cell.setAttribute("height", ch+"");
+				cell.style.border = "1px solid black";
+				cell.style.textAlign = "center";
+				cell.style.cursor = "pointer";
+				cell.innerHTML = day+"";
+				if (day == this._currentDay)
+				{
+					cell.style.background="#fff";
+				}
+				day++;
+			}
+		}
+
+		this.getContainer().append(table);
+	},
+	
+	getButton: function ( label , classname )
+	{
+		return ajsf.create (null,'a',classname).setAt('title',label).html(label);
+	},
+	
+	getSpan: function ( label , classname )
+	{
+		return ajsf.create (null,'span',classname).html(''+label);
+	},
+
+	daysInMonth: function (year, month) {
+		var date=new Date(),
+			result=0;
+		
+		date.setFullYear(year, month-1, 1);
+		
+		while ((date.getFullYear() <= year)&&(date.getMonth() <= (month-1))) {
+			result++;
+			if (result > 31) {
+				return 0;
+			}
+			date.setFullYear(year, month-1, date.getDate()+1);
+		}
+		
+		return result;
+	}
 });
 /*
 ajsf.forms.Calendar.styles.Box ;

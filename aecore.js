@@ -1164,6 +1164,13 @@ var ajsf = {
 			[boolean]
 		*/
 		isIE: b.IE,
+		
+		/*
+			Variable: ltr
+			
+			Global variable used by some ajsf plugins to kown if user must read in "Left To Right" (true) or "Right To Left" (false)
+		 */
+		ltr: true,
 			
 		/*
 			Variable: _sel
