@@ -99,169 +99,34 @@
 			
 			createFromScratch: function ( element, title , htmlContent )
 			{
-				this._destroy () ;
-				this.element = element ;
-				var e = this._create () ;
-				this._setContent ( title , htmlContent ) ;
-				this._refreshDisplay () ;
-				return e ;
-			},
-			
-			/**
-			 * 
-			 * @private
-			 */
-			_create: function ()
-			{
-				if ( this._container )
-					return this._container ;
-
-				var p = $.create("w_popup",null,"data-popup no-list-style");
-				p.setAttribute ( "style" , this.popStyle ) ;
-				this._container = p ;
-				
-				p = $.create("w_popup_arrow",null,"data-popup-arrow");
-				this._arrow = p ;
-				
-				this._container.hide () ;
-				
-				_d.body.appendChild(this._container) ;
-				_d.body.appendChild(this._arrow) ;
-				
-				$.addScrollCB("detail", $.delegate(this,"_refreshDisplay") );
-				_(window).addListener ('resize', $.delegate(this,"_refreshDisplay")) ;
-				
-				return this._container ;
-			},
-			
-			getContainer: function ()
-			{
-				return this._container ;
-			},
-			
-			_destroy: function ()
-			{
-				$.remScrollCB( "detail") ;
-				
-				if(this._container)
-					this._container.destroy () ;
-				if ( this._arrow )
-					this._arrow.destroy () ;
-				
-				this._container = null ;
-				this._arrow = null ;
-				this.title = null ;
-				this.element = null ;
-				this._destroying = false ;
-				this._appearing = true ;
-			},
-			
-			
-			destroy: function ()
-			{
-				
-				if(this._destroying) return;
-				var c = this._container; 
-				
-				
-				if ( !c || !c.tween ) return this._destroy() ;
-				if( !c.dispatch('close') )
-				{
-					return ;
-				}
-				this._destroying = true ;
-				if (this._arrow) this._arrow.tween({opacity:1},{opacity:0},"regularEaseOut",0.5);
-				c.tween({opacity:1},{opacity:0},"regularEaseOut",0.5,{onMotionEnd: $.delegate(this, "_destroy")});
-			},
-			
-			_refreshDisplay: function ()
-			{
-				var c = this._container ,
-					a = this._arrow ,
-					e = _(this.element) ,
-					l = 0,
-					al = 0,
-					t = 0 ,
-					at = 0;
-				
-				if ( !e.getLeft ){
-					return;
-				}
-				
-				if (e == null || a == null || !a.setLeft )
-				{
-					return this.destroy () ;
-				}
-				
-				this._container.show () ;
-				
-				al = e.getLeft(true)-a.w()-10;
-				at = e.getTop(true) ;
-				
-				l = e.getLeft(true)-c.w()-a.w() ;
-				t = e.getTop(true)-50 ;
-				
-				
-				if ( t+c.h() > $.viewport.getHeight()) 
-					t = $.viewport.getHeight() - c.h() - 10 ;
-
-				c.setLeft(l);
-				c.setTop(t);
-				a.setLeft(al);
-				a.setTop(at);
-				if ( this._appearing == true )
-				{
-					this._appearing = false ;
-				}
-
-				//if ( at > t+c.h()-50 || at < t + 50 || t < 0 || at > $.viewport.getHeight () )
-					//return this.destroy () ;
-			},
-			
-			_refreshDisplayAfter: function ()
-			{
-				if(this._destroying) return;
-				
-				var c = this._container ,
-					a = this._arrow ,
-					e = this.element ;
-
-				if (!e ) {
-					this.destroy () ;
-				}
-				if ( c.getTop(true)+c.h() > $.viewport.getHeight() ) 
-				{
-					c.tween({top:c.getTop(true)},{top:$.viewport.getHeight() - c.h() - 10},"regularEaseOut",0.5 ) ;
-				}
-			},
-			
-			_setContent: function (title, content)
-			{
-				this._container.innerHTML = str =( title ? "<h3>" + title + "</h3>" : '' ) +  '<div id="data-popup-content">' + ( content ? content : '' ) + '</div><input type="button" onclick="javascript:$.popup.detail.destroy();" class="right" value="'+$.l10n.get('Close')+'" title="'+$.l10n.get('Close')+'" />' ;
-			},
-			
-			
-			_arrow: null,
-			_container: null,
-			_destroying: false,
-			_appearing: true,
-			
-			getContainer: function ()
-			{
-				return this._container ;
+				var popup = new ajsf.popup.InnerPopup (element) ;
+				popup.getContainer().html(( title ? "<h3>" + title + "</h3>" : '' ) +  '<div id="data-popup-content">' + ( htmlContent ? htmlContent : '' ) + '</div><input type="button" onclick="javascript:$.popup.detail.destroy();" class="right" value="'+$.l10n.get('Close')+'" title="'+$.l10n.get('Close')+'" />' );
+				this.current = popup ;
+				return popup ;
 			},
 			
 			onLoadDetails: function ( success , data )
 			{
-				this._create () ;
-				this._setContent ( this.title, $.aejax.detailToHTMLList ( data['results'] , ": " , "<strong>" , "</strong>") ) ;
-				$.next($.delegate(this,"_refreshDisplay")) ;
+				var popup = new ajsf.popup.InnerPopup (this.element) ;
+				this.current = popup ;
+				popup.getContainer().html( this.title, $.aejax.detailToHTMLList ( data['results'] , ": " , "<strong>" , "</strong>") ) ;
+				popup.refresh () ;
+				return popup ;
 			},
 			beforeLoadDetails: function ( title , element )
 			{
 				this.element = element ;
 				this.title = title ;
 			},
+			destroy: function ()
+			{
+				if ( this.current )
+				{
+					this.current.destroy () ;
+					this.current = null ;
+				}
+			},
+			current: null,
 			title: null,
 			element: null
 		}
@@ -566,14 +431,23 @@
 	};
 	
 	
+	ajsf.popup.instance = null ;
+	
+	
 	ajsf.popup.InnerPopup = ajsf.Class.extend({
 
 		
 		construct: function(element)
 		{
+
+			if ( !ajsf.popup.instance )
+			{
+				ajsf.popup.instance = this ;
+			}
+			
 			this.element = element ;
 			this._create () ;
-			this._refreshDisplay () ;
+			this.refresh () ;
 		},
 		
 		/**
@@ -587,15 +461,14 @@
 
 			var p = this._container = $.create(null,null,'data-popup no-list-style');
 			p.setAttribute ( "style" , ajsf.popup.Dialog.styles.dialog ) ;
-			p.setAttribute ( "style" , ajsf.popup.Dialog.styles.innerPopup ) ;
 			
-			this._arrow = $.create(null,null,'data-popup-arrow');
+			this._arrow = $.create(null,'div','data-popup-arrow');
 			
 			_d.body.appendChild(this._container) ;
 			_d.body.appendChild(this._arrow) ;
 			
-			ajsf.addScrollCB('detail', $.delegate(this,'_refreshDisplay') );
-			_(window).addListener ('resize', $.delegate(this,'_refreshDisplay')) ;
+			ajsf.addScrollCB('detail', $.delegate(this,'refresh') );
+			_(window).on ('resize', $.delegate(this,'refresh')) ;
 			
 			return this._container ;
 		},
@@ -605,7 +478,25 @@
 			return this._container ;
 		},
 		
-		_destroy: function ()
+		hide: function ()
+		{
+			this._container.hide () ;
+			this._arrow.hide () ;
+		},
+		
+		show: function ()
+		{
+			if ( ajsf.popup.instance )
+			{
+				ajsf.popup.instance.hide () ;
+				ajsf.popup.instance = this ;
+			}
+			this._arrow.show () ;
+			this._container.show () ;
+			this.refresh () ;
+		},
+		
+		destroy: function ()
 		{
 			ajsf.remScrollCB( 'detail' ) ;
 			
@@ -623,25 +514,7 @@
 			this._appearing = true ;
 		},
 		
-		
-		destroy: function ()
-		{
-			
-			if(this._destroying) return;
-			var c = this._container; 
-			
-			
-			if ( !c || !c.tween ) return this._destroy() ;
-			if( !c.dispatch('close') )
-			{
-				return ;
-			}
-			this._destroying = true ;
-			if (this._arrow) this._arrow.tween({opacity:1},{opacity:0},'regularEaseOut',0.5);
-			c.tween({opacity:1},{opacity:0},'regularEaseOut',0.5,{onMotionEnd: $.delegate(this, '_destroy')});
-		},
-		
-		_refreshDisplay: function ()
+		refresh: function ()
 		{
 			var c = this._container ,
 				a = this._arrow ,
@@ -649,6 +522,9 @@
 				l = 0,
 				al = 0,
 				t = 0 ,
+				oL = e.getLeft(true),
+				oT = e.getTop(true),
+				oW = e.w () ,
 				at = 0;
 			
 			
@@ -656,50 +532,22 @@
 				return;
 			}
 			
-			if (e == null || a == null || !a.setLeft )
-			{
-				return this.destroy () ;
-			}
 			
-			this._container.show () ;
+			al = oL + oW ;
+			at = oT ;
 			
-			al = e.getLeft(true) + e.w() ;
-			at = e.getTop(true) ;
+			l = oL + oW + a.w () ;
+			t = oT-50 ;
 			
-			l = e.getLeft(true) + e.w() + a.w () ;
-			t = e.getTop(true)-50 ;
-			
-			
-			if ( t+c.h() > $.viewport.getHeight()) 
-				t = $.viewport.getHeight() - c.h() - 10 ;
-
 			c.setLeft(l);
 			c.setTop(t);
-			a.setLeft(al);
+			a.setLeft(al).remClass('arr-right').addClass('arr-left');
 			a.setTop(at);
 			if ( this._appearing == true )
 			{
 				this._appearing = false ;
 			}
 		},
-		
-		_refreshDisplayAfter: function ()
-		{
-			if(this._destroying) return;
-			
-			var c = this._container ,
-				a = this._arrow ,
-				e = this.element ;
-
-			if (!e ) {
-				this.destroy () ;
-			}
-			if ( c.getTop(true)+c.h() > $.viewport.getHeight() ) 
-			{
-				c.tween({top:c.getTop(true)},{top:$.viewport.getHeight() - c.h() - 10},"regularEaseOut",0.5 ) ;
-			}
-		},
-		
 		
 		
 		_arrow: null,

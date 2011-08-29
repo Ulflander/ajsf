@@ -13,7 +13,6 @@
 (function (){
 	
 	
-	
 
 	/*
 		Package: global
@@ -55,8 +54,13 @@
 		return typeof(o) === (t === 'func' ? 'function' : t);
 	} ),
 	
-	
-	
+	getStackDump = glob('getStackDump', 
+
+	function () {
+	var lines = [];
+	for (var frame = Components.stack; frame; frame = frame.caller)
+	lines.push(frame.filename + " (" + frame.lineNumber + ")");return lines.join("\n");
+	}),
 	
 	/*
 	  	Variable: _w
@@ -743,6 +747,7 @@ var ajsf = {
 				callback
 			
 			Returns:
+			Current instance for chained commands on this element
 		*/
 		listen: function (action,callback) { return this.addListener(action, callback); } ,
 		/*
@@ -755,6 +760,7 @@ var ajsf = {
 				callback
 			
 			Returns:
+			Current instance for chained commands on this element
 		*/
 		on: function (action,callback) { return this.addListener(action, callback); } ,
 		
@@ -787,7 +793,11 @@ var ajsf = {
 			
 			Parameters:
 				action - [string] The action to dispatch
-				return - Result of dispatching (False if any listener has prevented the event, true otherwise)
+				bubbles - [boolean]
+				cancellable - [boolean]
+			
+			Returns:
+			Result of dispatching (False if any listener has prevented the event, true otherwise)
 		*/
 		dispatch: function (action, bubbles , cancellable ) {
 			var o;
@@ -964,11 +974,14 @@ var ajsf = {
 		/*
 			Function: h
 			
+			Set OR get element heiaght
+			
 			Parameters:
-				val
-				suffix
+				val - [int] Value of height
+				suffix - [string] Suffix to use in CSS (default: px)
 			
 			Returns:
+			Element height if used as getter, current instance for chained commands on this element if used as setter
 		*/
 		h: function ( val, suffix )
 		{
@@ -982,11 +995,14 @@ var ajsf = {
 		/*
 			Function: w
 			
+			Set OR get element width
+			
 			Parameters:
-				val
-				suffix
+				val - [int] Value of width
+				suffix - [string] Suffix to use in CSS (default: px)
 			
 			Returns:
+			Element width if used as getter, current instance for chained commands on this element if used as setter
 		*/
 		w: function ( val, suffix )
 		{
@@ -1058,6 +1074,18 @@ var ajsf = {
 			return this;
 		},
 		
+		/*
+			Function: hover
+			
+			Calls a function when mouse enters the element and another one when mouse leaves element
+			
+			Parameters:
+				func1 - [function] The mouse enter callback function
+				func2 - [function] The mouse leave callback function
+			
+			Returns:
+			Current instance for chained commands on this element
+		 */
 		hover: function ( func1, func2 )
 		{
 			this.__$hov = false ;
@@ -1081,6 +1109,26 @@ var ajsf = {
 							_d.on('mousemove', f ); 
 						}
 					});
+		},
+		
+		/*
+			Function: avoidTextSelection
+			
+			Prevent from text selection in element
+			
+			Returns:
+			Current instance for chained commands on this element
+		 */
+		avoidTextSelection: function ()
+		{
+			this.onselectstart = function() {
+				return false;
+			};
+			this.unselectable = 'on';
+			this.stylize('MozUserSelect', 'none');
+			this.stylize('cursor', 'default' );
+			
+			return this ;
 		}
 	},
 
@@ -1986,11 +2034,11 @@ var ajsf = {
 			var elements = [],
 				value = null ,
 				wrapper = context || document,
-				all = wrapper.getElementsByTagName( '*' ),
+				all = wrapper.getElementsByTagName ? wrapper.getElementsByTagName( '*' ) : [],
 				l = all.length,
 				a = attrName.split('='),
 				x = 0;
-			
+				
 			if ( a.length > 1 ){
 				value = a[1] ;
 				attrName = a[0];

@@ -536,10 +536,11 @@ ajsf.aeforms = {
 				for ( ii ; ii < ll ; ii++ )
 				{
 					param = plugin[ii].split(':') ;
-					options[param[0]] = options[param[1]] ;
+					options[param[0]] = param[1] ;
 				}
 				
 				options.input = input ;
+				
 
 				ajsf.load(plugfilename);
 				ajsf.ready(function(){
@@ -768,6 +769,7 @@ ajsf.aeforms = {
 
 			if ( ajsf.aejson )
 			{
+					
 				_('[data-source-main]', object, false, true).forEach (function(e){
 						var o = $.aejson.fromjson(e.innerHTML) ;
 						if ( o )
@@ -881,13 +883,20 @@ ajsf.aeforms = {
 					{
 						this.isModified = false ;
 						this.updateContainer.update ( this.ajaxAction , o , false , true ) ;
-					} else if ( this.ajaxAction )
-					{
-						this.isModified = false ;
-						this.action = this.ajaxAction ;
-						this.submit () ;
-						return true ;
 					} else {
+
+						for ( k in this.elements )
+						{
+							if ( this.elements[k] && this.elements[k].dedicatedPlugin )
+							{
+								this.elements[k].dedicatedPlugin.destroy () ;
+							}
+						}
+						
+						if ( this.ajaxAction )
+						{
+							this.action = this.ajaxAction ;
+						}
 						this.isModified = false ;
 						this.submit () ;
 						return true ;
@@ -1057,7 +1066,10 @@ $.registerInterface ( {
 		{	
 			this.value = value ;
 			this.inputValidation();
-			this.form.isModified = true ;
+			if(this.form)
+			{
+				this.form.isModified = true ;
+			}
 			return this ;
 		}
 } );

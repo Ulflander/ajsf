@@ -13,18 +13,6 @@
 (function (){
 	
 	
-	ajsf.registerInterface({
-		avoidTextSelection: function ()
-		{
-			this.onselectstart = function() {
-				return false;
-			};
-			this.unselectable = 'on';
-			this.stylize('MozUserSelect', 'none');
-			this.stylize('cursor', 'default' );
-		}
-	});
-	
 	ajsf.Drag = ajsf.Class.extend({
 		
 		construct: function ( e , t , l , w , h )
