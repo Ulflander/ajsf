@@ -1160,7 +1160,7 @@ var ajsf = {
 				arr.pop ();
 				return arr.join("/") + "/";
 			}
-			return _d.location.href.split('#')[0];
+			return _d.location.href.split('#')[0].replace('run-test.html', '');
 		} () ),
 
 		/*

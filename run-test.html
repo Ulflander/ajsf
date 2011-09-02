@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" src="aecore.js"></script>
+
+	<script type="text/javascript">
+	    
+	    
+	    ajsf.ready(function(){
+		var errors = new Array () ;
+
+		function assertTrue ( value , message )
+		{
+		    if ( value !== true )
+		    {
+			errors.push( message );
+		    }
+		};
+		
+		ajsf.load('ae-calendar');
+		ajsf.load('ae-color-picker');
+		ajsf.load('ae-dynamic-table');
+		ajsf.load('ae-extended');
+		ajsf.load('ae-gmap');
+		ajsf.load('ae-numeric-stepper');
+		
+		assertTrue(true, 'Testing test') ;
+		
+		
+		
+		if ( errors.length == 0 )
+		{
+		    _('#testContainer').append(ajsf.create(null,'p','notify success').html('All tests successfull')) ;
+		    return;
+		}
+		for ( var k in errors )
+		{
+		    _('#testContainer').append(ajsf.create(null,'p','notify warning').html('Error: '+errors[k]));    
+		}
+	    });
+	    
+	    
+	</script>
+    </head>
+    <body>
+	<h1>AJSF Unit Tests</h1>
+	<div id="testContainer">
+
+	</div>
+    </body>
+</html>
