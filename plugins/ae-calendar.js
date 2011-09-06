@@ -43,6 +43,10 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			
 			this._input2 = null ;
 			
+			this._stepper1 = null ;
+			
+			this._stepper2 = null ;
+			
 			this._button = ajsf.create(null,'a')
 							.setClass('icon16 calendar unlabeled')
 							.setAt('href','#')
@@ -86,8 +90,23 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			{
 				this._input2.destroy () ;
 			}
-			
 			this._input2 = null ;
+			
+			
+			if ( this._stepper1 )
+			{
+				this._stepper1.destroy () ;
+			}
+			this._stepper1 = null ;
+			
+			
+			if ( this._stepper2 )
+			{
+				this._stepper2.destroy () ;
+			}
+			this._stepper2 = null ;
+			
+			
 			
 			this._super () ;
 		},
@@ -307,7 +326,7 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			
 			if (this._useTime)
 			{
-				this.buildFooter();
+			    this.buildFooter();
 			}
 		},
 		
@@ -347,9 +366,8 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			
 			var prevButton = this.getButton('&laquo;','cal-prev'),
 				nextButton = this.getButton(' &raquo;','cal-next'),
-				yearInput = this.getInput(this._currentYear,'year').w(40),
-				monthInput = this.getInput(this._currentMonth,'month').w(20),
-				cal = this ;
+				yearInput = this._getInput(this._currentYear,'year').w(40),
+				monthInput = this._getInput(this._currentMonth,'month').w(20) ;
 			
 			prevButton.on('click',ajsf.delegate(this,function(e){
 				ajsf.prevent(e);
@@ -423,6 +441,14 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 							stepper1Container,
 							stepper2Container
 						) ;
+						    
+				
+			    this._stepper1 = stepper1 ;
+			    this._stepper2 = stepper2 ;
+			} else if ( this._stepper1 )
+			{   
+			    this._stepper1.setValue(this._currentHour) ;
+			    this._stepper2.setValue(this._currentMinute) ;
 			}
 			
 			this.getContainer().append(this._footer) ;
@@ -503,7 +529,7 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			return ajsf.create (null,'a','cal-button '+classname).setAt('title',label).setAt('href','#').html(label);
 		},
 		
-		getInput: function ( label , classname )
+		_getInput: function ( label , classname )
 		{
 			return ajsf.create (null,'input',classname).setAt('type','text').setAt('value',label);
 		},
@@ -539,10 +565,10 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			this.setUseTime(useTime);
 			if ( useTime )
 			{
-				this._currentHour = parseInt(time[0]);
-				this._currentMinute = parseInt(time[1]);
+				this._currentHour = parseInt(this._trimLeadingZ(time[0]));
+				this._currentMinute = parseInt(this._trimLeadingZ(time[1]));
 			}
-			this.update(parseInt(date[0]), parseInt(date[1]), parseInt(date[2]) ) ;
+			this.update(parseInt(this._trimLeadingZ(date[0])), parseInt(this._trimLeadingZ(date[1])), parseInt(this._trimLeadingZ(date[2])) ) ;
 		},
 		
 		_updateInputValue: function ()
@@ -558,6 +584,15 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 				str += ' ' + (this._currentHour<10?'0':'') + this._currentHour + ':' + (this._currentMinute<10?'0':'') + this._currentMinute + ':00' ;
 			}
 			this._input.setValue (str) ;
+		},
+		
+		_trimLeadingZ: function ( str )
+		{
+		    while( str.length>1 && str[0] == '0' )
+		    {
+			str = str.substr(1);
+		    }
+		    return str ;
 		}
 	});
 

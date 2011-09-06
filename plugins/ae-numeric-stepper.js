@@ -173,7 +173,7 @@
 			var i, fin = ''+val;
 			if ( this._leadingZero > 0 )
 			{
-				for (var i=this._leadingZero; i>0;i--)
+				for (i=this._leadingZero; i>0;i--)
 				{
 					if ( val < Math.pow(10,i) )
 					{
