@@ -148,6 +148,7 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			
 			this._input.on('change',ajsf.delegate(this,function(e){
 				this._interpretInputValue();
+				this._updateInputValue();
 			}));
 			
 			this._interpretInputValue();
@@ -175,7 +176,7 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			Set the starting year in calendar selection. Default is 1901.
 			
 			Parameters:
-				startYear - [int] The starting year in calendar selection (e.g. 1901, 1929, 2098)
+				startYear -�[int] The starting year in calendar selection (e.g. 1901, 1929, 2098)
 			
 			Returns:
 			Current instance for chained commands on this element
@@ -207,7 +208,7 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			Set the ending year in calendar selection. Default is 2015.
 			
 			Parameters:
-				startYear - [int] The starting year in calendar selection (e.g. 1901, 1929, 2098)
+				startYear -�[int] The starting year in calendar selection (e.g. 1901, 1929, 2098)
 			
 			Returns:
 			Current instance for chained commands on this element
@@ -447,8 +448,8 @@ if ( !window.ajsf || !ajsf.popup ) return ;
 			    this._stepper2 = stepper2 ;
 			} else if ( this._stepper1 )
 			{   
-			    this._stepper1.setValue(this._currentHour) ;
-			    this._stepper2.setValue(this._currentMinute) ;
+			    this._currentHour = this._stepper1.setValue(this._currentHour).getValue () ;
+			    this._currentMinute = this._stepper2.setValue(this._currentMinute).getValue() ;
 			}
 			
 			this.getContainer().append(this._footer) ;

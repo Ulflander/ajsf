@@ -85,12 +85,12 @@
 			
 			if ( !this._buttonBottom )
 			{
-				this._buttonBottom = this._getButton('-','decrease');
+				this._buttonBottom = this._getButton('-','decrease','decrease');
 			}
 			this._container.append(this._buttonBottom);
 			if ( !this._buttonTop )
 			{
-				this._buttonTop = this._getButton('+','increase');
+				this._buttonTop = this._getButton('+','increase','increase');
 			}
 			this._container.append(this._buttonTop);
 			
@@ -160,13 +160,13 @@
 		 */
 		getShownValue: function ( val )
 		{
-			if ( val )
+			if ( val || val === 0 )
 			{
 				val = parseInt(val);
 			} else {
 				val = this.checkValue(
 						parseInt(
-							this._input.getValue().replace(/([^0-9])/g,'').replace(/^0/g,'')
+							this._input.getValue().replace(/([^0-9])/g,'').replace(/^0/g,'') || 0
 						)
 					);
 			}
@@ -192,6 +192,8 @@
 			Parameters:
 				val - [int] The new value of the numeric stepper
 				
+			Returns:
+			Current instance for chained commands on this element
 				
 		 */
 		setValue: function ( val )
@@ -199,12 +201,6 @@
 			this._input.setValue(this.getShownValue(this.checkValue(val)));
 
 
-			if ( this._previous != val )
-			{
-				this._previous = val ;
-				this.dispatch('change');
-			}
-			
 			return this ;
 		},
 		
@@ -224,7 +220,7 @@
 			{
 				val = this.checkValue(
 							parseInt(
-								this._input.getValue().replace(/([^0-9])/g,'').replace(/^0/g,'')
+								this._input.getValue().replace(/([^0-9])/g,'').replace(/^0/g,'') || 0
 							)
 						);
 				this._input.setValue(this.getShownValue(val));
@@ -248,7 +244,7 @@
 		checkValue: function ( val )
 		{
 			val = parseInt(val);
-			
+			   
 			if(isNaN(val))
 			{
 				val = this._minVal ;
@@ -414,9 +410,9 @@
 		},
 
 		
-		_getButton: function ( label , callback )
+		_getButton: function ( label , callback, classname )
 		{
-			return ajsf.create(null,'a')
+			return ajsf.create(null,'a',classname)
 				.html(label)
 				.setAt('href','#')
 				.stylize('cursor','pointer')
