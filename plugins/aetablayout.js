@@ -150,6 +150,25 @@
 
 			var elems = _('li,td,th', listContainer, false, true ),
 				i = 0 ;
+				
+			if ( elems.length == 0 )
+			{
+			    elems = _('a', listContainer, false, true ) ;
+			    
+			    for ( i in elems )
+			    {
+				    var link = elems[i],
+					    t;
+
+				    if ( link )
+				    {
+					    t = new ajsf.AjaxTabElement ( this, elems[i] , link, this._l ) ;
+					    this._onAdd(t,true,avoidUpdate);
+				    }
+			    }
+			
+			    return this;
+			}
 			
 			for ( i in elems )
 			{
