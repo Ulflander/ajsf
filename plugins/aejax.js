@@ -230,6 +230,7 @@
 		this.xhr.open("POST",this._gateway , true);
 		this.xhr.onreadystatechange = $.delegate(this,"_onChange") ;
 		this.srh("Content-type", "application/x-www-form-urlencoded");
+		
 		if ( b.Chrome == false )
 		{
 		    this.srh("Connection", "close");

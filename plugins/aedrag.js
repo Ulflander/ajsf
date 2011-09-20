@@ -231,7 +231,7 @@
 		
 		addDropBoxes: function ( container )
 		{
-			var els = _('div, li',container,false,true), k;
+			var els = _('div, li, a',container,false,true), k;
 			
 			for ( k in els )
 			{
