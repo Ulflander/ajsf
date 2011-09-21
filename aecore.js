@@ -3391,7 +3391,35 @@
     (function(){
 	var initializing = false, fnTest = /xyz/.test(function(){
 	    xyz;
-	}) ? /\b_super\b/ : /.*/;
+	}) ? /\b_super\b/ : /.*/, 
+	expandProps = function ( prop, prototype, _super )
+	{
+	    
+	    // Copy the properties over onto the new prototype
+	    for (var name in prop) {
+		// Check if we're overwriting an existing function
+		prototype[name] = typeof prop[name] == "function" && 
+		typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+		(function(name, fn){
+		    return function() {
+			var tmp = this._super;
+	            
+			// Add a new ._super() method that is the same method
+			// but on the super-class
+			this._super = _super[name];
+	            
+			// The method only need to be bound temporarily, so we
+			// remove it when we're done executing
+			var ret = fn.apply(this, arguments);        
+			this._super = tmp;
+	            
+			return ret;
+		    };
+		})(name, prop[name]) :
+		prop[name];
+	    }
+	    
+	};
 	// The base Class implementation (does nothing)
 	  
 	/*
@@ -3423,29 +3451,7 @@
 	    }
 	    initializing = false;
 	    
-	    // Copy the properties over onto the new prototype
-	    for (var name in prop) {
-		// Check if we're overwriting an existing function
-		prototype[name] = typeof prop[name] == "function" && 
-		typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-		(function(name, fn){
-		    return function() {
-			var tmp = this._super;
-	            
-			// Add a new ._super() method that is the same method
-			// but on the super-class
-			this._super = _super[name];
-	            
-			// The method only need to be bound temporarily, so we
-			// remove it when we're done executing
-			var ret = fn.apply(this, arguments);        
-			this._super = tmp;
-	            
-			return ret;
-		    };
-		})(name, prop[name]) :
-		prop[name];
-	    }
+	    expandProps ( prop, prototype , _super ) ;
 	    
 	    // The dummy class constructor
 	    function Class() {
@@ -3472,33 +3478,7 @@
 	
 	    Class.overload = function(prop)
 	    {
-		var _super = this.prototype,
-		    prototype = this.prototype ;
-		    
-		// Copy the properties over onto the new prototype
-		for (var name in prop) {
-		    // Check if we're overwriting an existing function
-		    prototype[name] = typeof prop[name] == "function" && 
-		    typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-		    (function(name, fn){
-			return function() {
-			    var tmp = this._super;
-	            
-			    // Add a new ._super() method that is the same method
-			    // but on the super-class
-			    this._super = _super[name];
-	            
-			    // The method only need to be bound temporarily, so we
-			    // remove it when we're done executing
-			    var ret = fn.apply(this, arguments);        
-			    this._super = tmp;
-	            
-			    return ret;
-			};
-		    })(name, prop[name]) :
-		    prop[name];
-		}
-	    
+		expandProps ( prop, this.prototype , this.prototype ) ;
 	    } ;
 		 
 	    return Class;
