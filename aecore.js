@@ -1868,7 +1868,7 @@
 			
 	    if(!selector)
 	    {
-		return false;
+		return asArray ? [] : false;
 	    }
 			
 	    // local vars
@@ -1894,7 +1894,7 @@
 			
 	    if ( !b )
 	    {
-		return ( asArray === null || asArray === false ) ? [] : null;
+		return asArray ? [] : null;
 	    }
 			
 	    // find matching elements within the wrappers (context)
