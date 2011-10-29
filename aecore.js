@@ -2320,6 +2320,7 @@
 	    {
 		url += '?' ;
 	    }
+	    this._jsonpidx += 1 ;
 	    url += '&jsonp=' + cb ;
 	    sc = _d.createElement('script') ;
 	    sc.setAttribute("type","text/javascript");
