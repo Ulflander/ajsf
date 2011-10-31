@@ -353,7 +353,7 @@
 			}
 			
 
-			if ( t.url && t.url != this._ajaxContainer.getLastUpdateURL() )
+			if ( t.url && t.url != _(this._ajaxContainer).getLastUpdateURL() )
 			{
 				if ( !_(this._ajaxContainer).update ( t.url , {}, false, false, false, dispatchGlobal ) )
 				{
