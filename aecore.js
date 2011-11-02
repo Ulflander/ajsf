@@ -1935,7 +1935,7 @@
 							
 							if ( key.indexOf('*') > -1 )
 							{
-								els = this.getByReg(key.replace('*','[a-zA-Z0-9_-/]{1,}'), wrappers[ a ]) ;
+								els = this.getByReg(key.replace('*','[a-zA-Z0-9_\\-\\/]{1,}'), wrappers[ a ]) ;
 
 								// Apply interfaces on element and store it
 								l = els.length ;
