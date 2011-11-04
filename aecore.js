@@ -1352,9 +1352,7 @@
 
 		compatMode: function ()
 		{
-			
 			glob('$', null);
-
 		},
 
 		/*
