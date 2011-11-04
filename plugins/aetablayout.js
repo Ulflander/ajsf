@@ -621,7 +621,7 @@
 			this.container = container ;
 			this.index = index ;
 	
-			button.on ( 'click', ajsf..delegate(this,'show') ) ;
+			button.on ( 'click', ajsf.delegate(this,'show') ) ;
 		},
 		/*
 			Function: show
