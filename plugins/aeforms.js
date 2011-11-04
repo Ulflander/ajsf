@@ -177,7 +177,7 @@ ajsf.aeforms = {
 			
 			_onSelect: function (inputID,label,id)
 			{
-				$.aeforms.pickin.select(inputID,label,id);
+				ajsf.aeforms.pickin.select(inputID,label,id);
 				
 			},
 			
@@ -273,7 +273,7 @@ ajsf.aeforms = {
 
 				if ( input.hasAttribute('data-ac-init-cb') )
 				{
-					o = $.retrieve(input.getAttribute('data-ac-init-cb') ) ;
+					o = ajsf.retrieve(input.getAttribute('data-ac-init-cb') ) ;
 					if (is(o,'function'))
 					{
 						suggestions = o ( suggestions ) ;
@@ -296,7 +296,7 @@ ajsf.aeforms = {
 				
 				if ( input.hasAttribute('data-ac-cb') )
 				{
-					o = $.retrieve(input.getAttribute('data-ac-cb') ) ;
+					o = ajsf.retrieve(input.getAttribute('data-ac-cb') ) ;
 					if (is(o,'function'))
 					{
 						callback = o; 
@@ -320,14 +320,14 @@ ajsf.aeforms = {
 						
 						label = this._executeCallbacks(label, suggestions[k], src[0], src[1], src[2]) ;
 						
-						element = $.create ( null, 'li' , 'sans-serif hoverable' ) ;
+						element = ajsf.create ( null, 'li' , 'sans-serif hoverable' ) ;
 						
 						element._i = input.getAttribute('id');
 						element._l = label;
 						element._c = content ;
 						
-						element.addListener ( 'click' , function (e) {$.aeforms.suggestions._onSelect(this._i, this._l, this._c);}) ;
-						element.addListener ( 'mouseover' , function (e) {$.aeforms.suggestions._unhighlight(true);}) ;
+						element.addListener ( 'click' , function (e) {ajsf.aeforms.suggestions._onSelect(this._i, this._l, this._c);}) ;
+						element.addListener ( 'mouseover' , function (e) {ajsf.aeforms.suggestions._unhighlight(true);}) ;
 						
 						element.innerHTML = prefix +label+suffix ;
 						
@@ -339,7 +339,7 @@ ajsf.aeforms = {
 					}
 				} else if ( input.hasAttribute('data-ac-empty-message') )
 				{
-					element = $.create ( null, 'li' , 'sans-serif' ) ;
+					element = ajsf.create ( null, 'li' , 'sans-serif' ) ;
 
 					element.innerHTML = input.getAttribute('data-ac-empty-message') ;
 					
@@ -426,7 +426,7 @@ ajsf.aeforms = {
 				this.lastSelected = id ; 
 				
 				var e= _('#' + inputID) , 
-					html = '<div id="'+inputID+'/' +id+ '"><a onclick="$.aeforms.pickin.unselect(this.offsetParent,\''+id+'\',\''+inputID+'\');return false;">X</a> ' + label + '</div>', 
+					html = '<div id="'+inputID+'/' +id+ '"><a onclick="ajsf.aeforms.pickin.unselect(this.offsetParent,\''+id+'\',\''+inputID+'\');return false;">X</a> ' + label + '</div>',
 					e2 = _('#' + inputID.split('/input').join('')) ,
 					e3 = _('#' + inputID.split('/input').join('/display')),
 					a = ( e2.value ? e2.value.split(',') : [] ) ;
@@ -507,7 +507,7 @@ ajsf.aeforms = {
 			e.setAttribute('style','display:none' ) ;
 			p.appendChild(e);
 			
-			input.hideSuggestionsDelegation = $.delegate($.aeforms.suggestions,'hide') ;
+			input.hideSuggestionsDelegation = ajsf.delegate(ajsf.aeforms.suggestions,'hide') ;
 			
 			input.behavior = null ;
 			
@@ -517,7 +517,7 @@ ajsf.aeforms = {
 				{
 					case "latlng":
 						input.addListener('focus',function(e){
-							$.aeforms.advanced.latlngBehavior(this);
+							ajsf.aeforms.advanced.latlngBehavior(this);
 						});
 						break;
 				}
@@ -557,7 +557,7 @@ ajsf.aeforms = {
 			
 			// On focus, we init validity
 			input.addListener('focus',function(e){
-				$.undelayed(600,this.hideSuggestionsDelegation);
+				ajsf.undelayed(600,this.hideSuggestionsDelegation);
 				this.inputValidation() ;
 				if ( this.value == this.title )
 				{
@@ -577,13 +577,13 @@ ajsf.aeforms = {
 					this.value = this.title;
 				}
 				this.inputValidation() ;
-				$.delayed(300,this.hideSuggestionsDelegation);
+				ajsf.delayed(300,this.hideSuggestionsDelegation);
 				
 			});
 
 			if ( _('#'+id+'/__data',null,true,true).length == 1 )
 			{
-				var obj = $.aejson.fromjson(_('#'+id+'/__data').innerHTML) ,
+				var obj = ajsf.aejson.fromjson(_('#'+id+'/__data').innerHTML) ,
 					obj2 = _('#'+id+'/input') ,
 					src = obj2.getAttribute('data-ac-source').split('/') ,
 					key = obj2.getAttribute('data-ac-primary-key') ,
@@ -595,7 +595,7 @@ ajsf.aeforms = {
 					label = obj[k][src[2]];
 					label = this.suggestions._executeCallbacks(label, obj[k], src[0], src[1], src[2]) ;
 					
-					$.aeforms.pickin.select ( id + '/input' , label , obj[k][key] ) ;
+					ajsf.aeforms.pickin.select ( id + '/input' , label , obj[k][key] ) ;
 				}
 			}
 
@@ -619,11 +619,11 @@ ajsf.aeforms = {
 				
 				this.lastValue = this.value ;
 				
-				$.aejax.request($.URL + 'api' , 'core::data::autoComplete', {query: this.value, source: src, conditions: conds, results: 20} , $.delegate(this,"onAutoCompleteUpdate"), true, true ) ;
+				ajsf.aejax.request(ajsf.URL + 'api' , 'core::data::autoComplete', {query: this.value, source: src, conditions: conds, results: 20} , ajsf.delegate(this,"onAutoCompleteUpdate"), true, true ) ;
 			} ;
 
 
-			input.autoCompleteDelegation = $.delegate(input,'_autoComplete') ;
+			input.autoCompleteDelegation = ajsf.delegate(input,'_autoComplete') ;
 			
 			// On key down we check for some special cases
 			input.addListener('keydown',function(e)
@@ -644,25 +644,25 @@ ajsf.aeforms = {
 							// Up arrow key
 							if ( intKeyCode == 40 )
 							{
-								$.aeforms.suggestions.up () ;
+								ajsf.aeforms.suggestions.up () ;
 								ajsf.prevent(e);
 							// Down arrow key
 							} else if ( intKeyCode == 38 )
 							{
-								$.aeforms.suggestions.down () ;
+								ajsf.aeforms.suggestions.down () ;
 								ajsf.prevent(e);
 							// Escape
 							} else if ( intKeyCode == 27 )
 							{
-								$.aeforms.pickin.unselectLast ( this.getAt('id') ) ;
+								ajsf.aeforms.pickin.unselectLast ( this.getAt('id') ) ;
 							// Enter, tab
 							}
 
 							
 						} else {
 							_(this).addClass('updating') ;
-							$.undelayed( 200, this.autoCompleteDelegation ) ;
-							$.delayed( 200, this.autoCompleteDelegation ) ;
+							ajsf.undelayed( 200, this.autoCompleteDelegation ) ;
+							ajsf.delayed( 200, this.autoCompleteDelegation ) ;
 						}
 					}
 				}
@@ -670,7 +670,7 @@ ajsf.aeforms = {
 				if ( this.hasAt('data-behavior-urlize-to') )
 				{
 					e = _('#'+this.getAt('data-behavior-urlize-to')) ;
-					e.value = $.urlize(this.value) ;
+					e.value = ajsf.urlize(this.value) ;
 					if(e.inputValidation) e.inputValidation () ;
 				}
 			});
@@ -679,7 +679,7 @@ ajsf.aeforms = {
 				var intKeyCode = e.keyCode;
 				if (this.hasAttribute('data-ac-source') && (intKeyCode === 13 || intKeyCode === 9 ) && ajsf.aeforms.suggestions.isVisible () && this.inputValidation())
 				{
-					$.aeforms.suggestions.selectCurrent () ;
+					ajsf.aeforms.suggestions.selectCurrent () ;
 					this.setValue('');
 					this.inputValidation () ;
 					if ( intKeyCode === 13 )
@@ -694,9 +694,9 @@ ajsf.aeforms = {
 				_(this).remClass('updating') ;
 				if ( success )
 				{
-					$.aeforms.suggestions.show ( this , data['results'] ) ;
+					ajsf.aeforms.suggestions.show ( this , data['results'] ) ;
 				} else {
-					$.aeforms.suggestions.hide (  ) ;
+					ajsf.aeforms.suggestions.hide (  ) ;
 				}
 			} ;
 			
@@ -771,7 +771,7 @@ ajsf.aeforms = {
 			{
 					
 				_('[data-source-main]', object, false, true).forEach (function(e){
-						var o = $.aejson.fromjson(e.innerHTML) ;
+						var o = ajsf.aejson.fromjson(e.innerHTML) ;
 						if ( o )
 						{
 							e.html(o[0][e.getAt('data-source-main')]) ;
@@ -804,7 +804,7 @@ ajsf.aeforms = {
 			{
 				
 				
-				$.aeforms.suggestions.hide ();
+				ajsf.aeforms.suggestions.hide ();
 
 				
 				// Define some basic vars
@@ -853,7 +853,7 @@ ajsf.aeforms = {
 						this._emptyMsgBox.show () ;
 					} else if ( msg )
 					{
-						elem = $.create(null,'div','expanded notify error', msg );
+						elem = ajsf.create(null,'div','expanded notify error', msg );
 
 						this._emptyMsgBox = elem ;
 						
@@ -938,7 +938,7 @@ ajsf.aeforms = {
 				new ajsf.forms.Form( object, false );
 			}
 			
-			object = $.i(object);
+			object = ajsf.i(object);
 			
 			
 			// Setup form to deactivate normal submission process
@@ -968,7 +968,7 @@ ajsf.aeforms = {
 	
 	
 
-$.registerInterface ( {
+ajsf.registerInterface ( {
 		
 		/**
 		 * Validate an input based on its HTML5 pattern attribute 
@@ -995,7 +995,7 @@ $.registerInterface ( {
 				} else
 				// Has Regexp pattern for validation
 				if ( this.hasAttribute('pattern') && this.getAttribute('pattern') != ''
-					&& $.validate(this.getAttribute('pattern'),this.value) == false )
+					&& ajsf.validate(this.getAttribute('pattern'),this.value) == false )
 				{
 					c = 'invalid' ;
 				} else if ( this.value == '' )
@@ -1010,7 +1010,7 @@ $.registerInterface ( {
 				} else 
 					// Has Regexp pattern for validation
 				if ( this.hasAttribute('pattern') && this.getAttribute('pattern') != ''
-						&& $.validate(this.getAttribute('pattern'),this.value) == false )
+						&& ajsf.validate(this.getAttribute('pattern'),this.value) == false )
 				{
 					c = 'invalid' ;
 				} else {
@@ -1074,6 +1074,6 @@ $.registerInterface ( {
 		}
 } );
 
-_(window).addListener ('resize', $.delegate($.aeforms.suggestions,'_windowResizeHandler')) ;
+_(window).addListener ('resize', ajsf.delegate(ajsf.aeforms.suggestions,'_windowResizeHandler')) ;
 	
 }() ); 

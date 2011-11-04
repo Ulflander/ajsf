@@ -17,7 +17,7 @@
 
 	
 	
-$.aeforms.advanced = {
+ajsf.aeforms.advanced = {
 		
 		geocoder: new google.maps.Geocoder(),
 
@@ -53,11 +53,11 @@ $.aeforms.advanced = {
 						disableDefaultUI: true,
 						streetViewControl: false
 				    },
-				    a = $.create ('latlng-behavior-container', 'div' ),
-				    b = $.create ('latlng-behavior-search', 'input' ),
-				    c = $.create ('latlng-behavior-button' , 'input' , 'search' ) ,
+				    a = ajsf.create ('latlng-behavior-container', 'div' ),
+				    b = ajsf.create ('latlng-behavior-search', 'input' ),
+				    c = ajsf.create ('latlng-behavior-button' , 'input' , 'search' ) ,
 				    d = null, z = null, 
-				    y = $.create ('latlng-behavior-container', 'div' ) ;
+				    y = ajsf.create ('latlng-behavior-container', 'div' ) ;
 			    
 			    this._formId = input.getAttribute('id').split('/')[0] ;
 			    
@@ -65,10 +65,10 @@ $.aeforms.advanced = {
 
 				if ( input.hasAt('data-behavior-georequest-manual') )
 				{
-					d = $.create('latlng-behavior-manual-check','input');
+					d = ajsf.create('latlng-behavior-manual-check','input');
 					d.setAt('type','checkbox');
-					d.addListener('click',$.delegate(this,'_onCheckHandler')) ;
-					z = $.create(null,'label');
+					d.addListener('click',ajsf.delegate(this,'_onCheckHandler')) ;
+					z = ajsf.create(null,'label');
 					z.setAt('for','latlng-behavior-manual-check') ;
 					z.innerHTML = input.getAt('data-behavior-georequest-manual') ;
 				}
@@ -87,9 +87,9 @@ $.aeforms.advanced = {
 				b.setAt('value',this._curRequest);
 				c.setAt('type','button');
 				c.setAt('value',input.getAt('data-behavior-search') );
-				c.addListener('click',$.delegate(this,'_latlngBhrGeoRequest')) ;
+				c.addListener('click',ajsf.delegate(this,'_latlngBhrGeoRequest')) ;
 				
-				$.popup.detail.createFromScratch ( input , (input.hasAt('data-behavior-title') ? input.getAt('data-behavior-title') : null ) );
+				ajsf.popup.detail.createFromScratch ( input , (input.hasAt('data-behavior-title') ? input.getAt('data-behavior-title') : null ) );
 				
 				_('#data-popup-content').appendChild(b) ;
 				_('#data-popup-content').appendChild(c) ;
@@ -109,11 +109,11 @@ $.aeforms.advanced = {
 					position: new google.maps.LatLng(0,0)
 				});
 
-			    google.maps.event.addListener(this._map, 'bounds_changed', $.delegate(this,'_updateCoordinates'));
+			    google.maps.event.addListener(this._map, 'bounds_changed', ajsf.delegate(this,'_updateCoordinates'));
 			} else {
 				this._marker.setMap(null);
 
-				$.popup.detail.createFromScratch ( input , (input.hasAt('data-behavior-title') ? input.getAt('data-behavior-title') : null ) );
+				ajsf.popup.detail.createFromScratch ( input , (input.hasAt('data-behavior-title') ? input.getAt('data-behavior-title') : null ) );
 				_('#data-popup-content').appendChild( this._search ) ;
 				_('#data-popup-content').appendChild( this._button ) ;
 				_('#data-popup-content').appendChild( this._comment ) ;
@@ -179,7 +179,7 @@ $.aeforms.advanced = {
 		_latlngBhrGeoRequest: function ()
 		{
 			this._curRequest = _('#latlng-behavior-search').value ;
-			this.geocoder.geocode( { 'address': this._curRequest} , $.delegate(this,'_ongeoRequestRespond'));
+			this.geocoder.geocode( { 'address': this._curRequest} , ajsf.delegate(this,'_ongeoRequestRespond'));
 			
 		},
 		_marker: null,

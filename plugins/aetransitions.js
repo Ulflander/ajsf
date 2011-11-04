@@ -9,7 +9,7 @@
  **********************************/
 
 (function(){
-	$.TRANSITION = {
+	ajsf.TRANSITION = {
 		
 		makeTransition: function ( objectDisappear, objectAppear, transitionType )
 		{

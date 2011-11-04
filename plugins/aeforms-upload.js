@@ -64,15 +64,15 @@
 			
 			this._preview = ajsf.create(null,'img') ;
 			this._preview.setAt('style','border: 0;max-height: 50px;max-width: 100px;');
-			this._preview.addListener('load',$.delegate(this,'_refresh'));
+			this._preview.addListener('load',ajsf.delegate(this,'_refresh'));
 			
 			this._button = ajsf.create(null,'input') ;
 			this._button.setAt('type','button');
 			this._button.setAt('value',this._input.getAt('data-upload-message'));
-			this._button.addListener('click',$.delegate(this,'_show'));
+			this._button.addListener('click',ajsf.delegate(this,'_show'));
 
-			this._input.updatePreview = $.delegate(this,'_updatePreview');
-			this._input.form.on('beforeSubmit',$.delegate(this,'_destroy'));
+			this._input.updatePreview = ajsf.delegate(this,'_updatePreview');
+			this._input.form.on('beforeSubmit',ajsf.delegate(this,'_destroy'));
 
 			this._input.getParent().appendChild(this._preview);
 			this._input.getParent().appendChild(this._button);

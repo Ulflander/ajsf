@@ -9,20 +9,20 @@
 
 (function (){
 	
-$.physics = {} ;
+ajsf.physics = {} ;
 
 
 
 
 
-$.physics.inpoly = function(x, y, polyX, polyY, polyRs, polyAs, polyangle){
+ajsf.physics.inpoly = function(x, y, polyX, polyY, polyRs, polyAs, polyangle){
 	//test to see if a single point is inside a certain polygon.
 	var crosslines = 0;
 	var x2 = x + 1000;
 	for (var p = 0; p < polyRs.length; p++) 
 	{
 		var p2 = (p + 1) % polyRs.length;
-		if ($.physics._linesIntersect(x, y, x2, y, polyX + polyRs[p] * Math.cos(polyAs[p] + polyangle), polyY + polyRs[p] * Math.sin(polyAs[p] + polyangle), polyX + polyRs[p2] * Math.cos(polyAs[p2] + polyangle), polyY + polyRs[p2] * Math.sin(polyAs[p2] + polyangle)).overlap) 
+		if (ajsf.physics._linesIntersect(x, y, x2, y, polyX + polyRs[p] * Math.cos(polyAs[p] + polyangle), polyY + polyRs[p] * Math.sin(polyAs[p] + polyangle), polyX + polyRs[p2] * Math.cos(polyAs[p2] + polyangle), polyY + polyRs[p2] * Math.sin(polyAs[p2] + polyangle)).overlap)
 		{
 			crosslines++;
 		}
@@ -41,13 +41,13 @@ $.physics.inpoly = function(x, y, polyX, polyY, polyRs, polyAs, polyangle){
 
 
 //store functions in 2d array to avoid messy lookups
-$.physics._collidingFunctions = new Array(5);
+ajsf.physics._collidingFunctions = new Array(5);
 for (var i = 0; i < 5; i++) 
 {
-	$.physics._collidingFunctions[i] = new Array(5);
+	ajsf.physics._collidingFunctions[i] = new Array(5);
 }
 
-$.physics._checkCircleAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkCircleAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	//if the distance between the two circles is less than or equal to the sum of their two radii then they'll collide
 	var distance=Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2);
 	
@@ -87,7 +87,7 @@ $.physics._checkCircleAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s
 	};
 };
 
-$.physics._checkCircleAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkCircleAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	//if circlePos + radius <leftmost, >rightmost, etc
 	if (p1[0] + d1 > p2[0] + d2[0] / 2 || p1[0] - d1 < p2[0] - d2[0] / 2 || p1[1] - d1 < p2[1] - d2[1] / 2 || p1[1] + d1 > p2[1] + d2[1] / 2) 
 	{
@@ -126,11 +126,11 @@ $.physics._checkCircleAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s
 	};
 };
 
-$.physics._checkBorderAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkBorderAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	return thisObject._checkCircleAndBorder(p2, d2, h2, a2, s2, p1, d1, h1, a1, s1)
 };
 
-$.physics._checkPolyAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkPolyAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	for (var i = 0; i < d1.modulii.length; i++) 
 	{
 		//coords of a point
@@ -181,7 +181,7 @@ $.physics._checkPolyAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2)
 	};
 };
 
-$.physics._checkPolyAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkPolyAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	
 	if(Math.dsqrd(p1[0],p1[1],p2[0],p2[1]) > Math.pow(d1.boundingR + d2,2))
 	{
@@ -236,7 +236,7 @@ $.physics._checkPolyAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2)
 	};
 }
 
-$.physics._checkCircleAndPoly = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkCircleAndPoly = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	//check points on poly to see if they are inside circle
 	
 	if(Math.dsqrd(p1[0],p1[1],p2[0],p2[1]) > Math.pow(d1 + d2.boundingR,2))
@@ -290,7 +290,7 @@ $.physics._checkCircleAndPoly = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2)
 	};
 }
 
-$.physics._checkPolyAndPoly = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2)
+ajsf.physics._checkPolyAndPoly = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2)
 {
 	
 	if(Math.dsqrd(p1[0],p1[1],p2[0],p2[1]) > Math.pow(d1.boundingR + d2.boundingR,2))
@@ -430,13 +430,13 @@ $.physics._checkPolyAndPoly = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2)
 	
 	//two ways of doing this - check points of poly A are in poly B and vice versa, OR check if any lines intersect.
 	
-	//$.physics._linesIntersect = function(sx1, sy1, sx2, sy2, px1, py1, px2, py2)
+	//ajsf.physics._linesIntersect = function(sx1, sy1, sx2, sy2, px1, py1, px2, py2)
 	/*
 	
 	*/
 };
 
-$.physics._checkRodAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkRodAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	
 	var points=[[Math.cos(a1)*d1 , Math.sin(a1)*d1],[Math.cos(a1+Math.PI)*d1 , Math.sin(a1+Math.PI)*d1]];
 	
@@ -484,7 +484,7 @@ $.physics._checkRodAndBorder = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	};
 };
 
-$.physics._checkRodAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkRodAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	
 	var x1=p1[0] + Math.cos(a1) * d1;
 	var y1=p1[1] + Math.sin(a1) * d1;
@@ -529,7 +529,7 @@ $.physics._checkRodAndCircle = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	
 }
 
-$.physics._checkCircleAndRod = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+ajsf.physics._checkCircleAndRod = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	
 	var x1=p2[0] + Math.cos(a2) * d2;
 	var y1=p2[1] + Math.sin(a2) * d2;
@@ -572,7 +572,7 @@ $.physics._checkCircleAndRod = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
 	
 }
 
-$.physics._checkRodAndPoly=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
+ajsf.physics._checkRodAndPoly=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
 	var x1=p1[0] + Math.cos(a1) * d1;
 	var y1=p1[1] + Math.sin(a1) * d1;
 	var x2=p1[0] + Math.cos(a1 + Math.PI) * d1;
@@ -640,7 +640,7 @@ $.physics._checkRodAndPoly=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
 		};
 }
 
-$.physics._checkPolyAndRod=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
+ajsf.physics._checkPolyAndRod=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
 	var x1=p2[0] + Math.cos(a2) * d2;
 	var y1=p2[1] + Math.sin(a2) * d2;
 	var x2=p2[0] + Math.cos(a2 + Math.PI) * d2;
@@ -699,7 +699,7 @@ $.physics._checkPolyAndRod=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
 
 
 
-$.physics._checkRodAndRod=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
+ajsf.physics._checkRodAndRod=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
 	
 	var Ax1=p1[0] + Math.cos(a1) * d1;
 	var Ay1=p1[1] + Math.sin(a1) * d1;
@@ -727,20 +727,20 @@ $.physics._checkRodAndRod=function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2) {
 		};
 }
 
-$.physics._collidingFunctions[0][0] = $.physics._checkCircleAndCircle;
-$.physics._collidingFunctions[0][2] = $.physics._checkCircleAndBorder;
-$.physics._collidingFunctions[0][3] = $.physics._checkCircleAndPoly;
-$.physics._collidingFunctions[0][4] = $.physics._checkCircleAndRod;
+ajsf.physics._collidingFunctions[0][0] = ajsf.physics._checkCircleAndCircle;
+ajsf.physics._collidingFunctions[0][2] = ajsf.physics._checkCircleAndBorder;
+ajsf.physics._collidingFunctions[0][3] = ajsf.physics._checkCircleAndPoly;
+ajsf.physics._collidingFunctions[0][4] = ajsf.physics._checkCircleAndRod;
 
-$.physics._collidingFunctions[3][0] = $.physics._checkPolyAndCircle;
-$.physics._collidingFunctions[3][2] = $.physics._checkPolyAndBorder;
-$.physics._collidingFunctions[3][3] = $.physics._checkPolyAndPoly;
-$.physics._collidingFunctions[3][4] = $.physics._checkPolyAndRod;
+ajsf.physics._collidingFunctions[3][0] = ajsf.physics._checkPolyAndCircle;
+ajsf.physics._collidingFunctions[3][2] = ajsf.physics._checkPolyAndBorder;
+ajsf.physics._collidingFunctions[3][3] = ajsf.physics._checkPolyAndPoly;
+ajsf.physics._collidingFunctions[3][4] = ajsf.physics._checkPolyAndRod;
 
-$.physics._collidingFunctions[4][0] = $.physics._checkRodAndCircle;
-$.physics._collidingFunctions[4][2] = $.physics._checkRodAndBorder;
-$.physics._collidingFunctions[4][3] = $.physics._checkRodAndPoly;
-$.physics._collidingFunctions[4][4] = $.physics._checkRodAndRod;
+ajsf.physics._collidingFunctions[4][0] = ajsf.physics._checkRodAndCircle;
+ajsf.physics._collidingFunctions[4][2] = ajsf.physics._checkRodAndBorder;
+ajsf.physics._collidingFunctions[4][3] = ajsf.physics._checkRodAndPoly;
+ajsf.physics._collidingFunctions[4][4] = ajsf.physics._checkRodAndRod;
 
 // p=pos=[x,y], d=dimensions,s=shape, a=angle, f=filled
 // shapes+dimensions:
@@ -750,13 +750,13 @@ $.physics._collidingFunctions[4][4] = $.physics._checkRodAndRod;
 // polygon: shape=3, d={.modulii, .angles, .boundingR}
 // line: shape = 4, d= length/2
 
-$.physics.checkForCollision = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
-	return $.physics._collidingFunctions[s1][s2](p1, d1, h1, a1, s1, p2, d2, h2, a2, s2);
+ajsf.physics.checkForCollision = function(p1, d1, h1, a1, s1, p2, d2, h2, a2, s2){
+	return ajsf.physics._collidingFunctions[s1][s2](p1, d1, h1, a1, s1, p2, d2, h2, a2, s2);
 }
 
 
 //used by poly and circle checks
-$.physics._checkPointsInsideCircle = function(polyPos, polyangle, polyRs, polyAs, circlePos, circleR){
+ajsf.physics._checkPointsInsideCircle = function(polyPos, polyangle, polyRs, polyAs, circlePos, circleR){
 	for (var k = 0; k < polyRs.length; k++) 
 	{
 		var polyX = polyRs[k] * Math.cos(polyAs[k] + polyangle);
@@ -784,7 +784,7 @@ $.physics._checkPointsInsideCircle = function(polyPos, polyangle, polyRs, polyAs
 }
 
 ///used by poly and circle checks
-$.physics._checkPolyLinesAndCircle = function(polyPos, polyangle, polyRs, polyAs, circlePos, circleR){
+ajsf.physics._checkPolyLinesAndCircle = function(polyPos, polyangle, polyRs, polyAs, circlePos, circleR){
 	var polyX = polyPos[0];
 	var polyY = polyPos[1];
 	
@@ -798,7 +798,7 @@ $.physics._checkPolyLinesAndCircle = function(polyPos, polyangle, polyRs, polyAs
 		var polyx2 = polyX + polyRs[k2] * Math.cos(polyAs[k2] + polyangle);
 		var polyy2 = polyY + polyRs[k2] * Math.sin(polyAs[k2] + polyangle);
 		
-		var polyCircle = $.physics._checkCircleAndLineCollide(polyx1, polyx2, polyy1, polyy2, circlePos[0], circlePos[1], circleR);
+		var polyCircle = ajsf.physics._checkCircleAndLineCollide(polyx1, polyx2, polyy1, polyy2, circlePos[0], circlePos[1], circleR);
 		
 		if (polyCircle.overlap) 
 		{
@@ -835,7 +835,7 @@ $.physics._checkPolyLinesAndCircle = function(polyPos, polyangle, polyRs, polyAs
 
 //find normal of line on a polygon a point is closest to
 
-$.physics._findPolyLineNormal = function(x, y, polyX, polyY, polyRs, polyAs, polyangle){
+ajsf.physics._findPolyLineNormal = function(x, y, polyX, polyY, polyRs, polyAs, polyangle){
 	var polyx1 = polyX + polyRs[0] * Math.cos(polyAs[0] + polyangle);
 	var polyy1 = polyY + polyRs[0] * Math.sin(polyAs[0] + polyangle);
 	var polyx2 = polyX + polyRs[1] * Math.cos(polyAs[1] + polyangle);
@@ -889,7 +889,7 @@ $.physics._findPolyLineNormal = function(x, y, polyX, polyY, polyRs, polyAs, pol
 }
 
 //checks for intersection
-$.physics._linesIntersect = function(sx1, sy1, sx2, sy2, px1, py1, px2, py2){
+ajsf.physics._linesIntersect = function(sx1, sy1, sx2, sy2, px1, py1, px2, py2){
 	if (sx1 < sx2) 
 	{
 		var sx1test = sx1;
@@ -1029,7 +1029,7 @@ $.physics._linesIntersect = function(sx1, sy1, sx2, sy2, px1, py1, px2, py2){
 
 //does a circle intersect a line?
 //returns point where circle intersects.  if two points, returns average
-$.physics._checkCircleAndLineCollide = function(x1, x2, y1, y2, a, b, r){
+ajsf.physics._checkCircleAndLineCollide = function(x1, x2, y1, y2, a, b, r){
 	//r=radius
 	//a=circle centre x
 	//b=circle centre y

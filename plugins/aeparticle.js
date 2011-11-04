@@ -14,21 +14,21 @@
  */
 (function (){
 	
-	if ( $.motion == undefined )
+	if ( ajsf.motion == undefined )
 	{
-		$.motion = {};
+		ajsf.motion = {};
 	}
 	
 	
 	
-	$.motion.ParticleSystem = function ( container , options )
+	ajsf.motion.ParticleSystem = function ( container , options )
 	{
-		this._emitter = new $.Point(0,0) ;
+		this._emitter = new ajsf.Point(0,0) ;
 		this._n = 100 ;
 
 		this._c = container ;
 		this._image = '' ;
-		this._velocity = new $.Point(2,5) ;
+		this._velocity = new ajsf.Point(2,5) ;
 
 		this._wind = 0 ;
 		
@@ -38,13 +38,13 @@
 		
 		this._particles = [] ;
 		
-		this._s = new $.Size(10,10) ;
+		this._s = new ajsf.Size(10,10) ;
 		
 		this._lifetime = 1000 ;
 		
 		this._frameRate = 20 ;
 		
-		this._c = $.create(null,'div') ;
+		this._c = ajsf.create(null,'div') ;
 		
 		this._c.css('position: absolute;width: 100%;height: 100%;top:0;right;0;z-index:1000;');
 		
@@ -53,11 +53,11 @@
 
 		container.appendChild(this._c);
 
-		$.expandOptionsToClass ( this , options ) ;
+		ajsf.expandOptionsToClass ( this , options ) ;
 		
-		this._delegation = $.delegate(this,'update') ;
+		this._delegation = ajsf.delegate(this,'update') ;
 
-		$.timer.registerEnterFrame(this._delegation) ;
+		ajsf.timer.registerEnterFrame(this._delegation) ;
 		
 		this._i = 1 ;
 		
@@ -65,7 +65,7 @@
 	};
 	
 	
-	$.motion.ParticleSystem.prototype.update = function ()
+	ajsf.motion.ParticleSystem.prototype.update = function ()
 	{
 		if (this._destroyed)
 		{
@@ -127,10 +127,10 @@
 		
 	};
 
-	$.motion.ParticleSystem.prototype.destroy = function (timeDif)
+	ajsf.motion.ParticleSystem.prototype.destroy = function (timeDif)
 	{
 
-		$.timer.unregisterEnterFrame(this._delegation) ;
+		ajsf.timer.unregisterEnterFrame(this._delegation) ;
 		
 		this._destroyed = true ;
 		
@@ -149,16 +149,16 @@
 		
 	};
 	
-	$.motion.ParticleSystem.prototype._createParticle = function ()
+	ajsf.motion.ParticleSystem.prototype._createParticle = function ()
 	{
-		var p = new $.motion.Particle(this._c , this._velocity, this._lifetime , this._image , this._s)
+		var p = new ajsf.motion.Particle(this._c , this._velocity, this._lifetime , this._image , this._s)
 		
 		p.attach(this._emitter) ;
 		
 		return p;
 	} ;
 
-	$.motion.ParticleSystem.prototype._destroyPool = function ()
+	ajsf.motion.ParticleSystem.prototype._destroyPool = function ()
 	{
 
 		for ( var k in this._pool )
@@ -168,106 +168,106 @@
 		this._pool = null ;
 	} ;
 	
-	$.motion.ParticleSystem.prototype.setLifetime = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setLifetime = function ( val )
 	{
 		this._lifetime = val ;
 	};
 	
-	$.motion.ParticleSystem.prototype.getLifetime = function ()
+	ajsf.motion.ParticleSystem.prototype.getLifetime = function ()
 	{
 		return this._lifetime ;
 	};
 	
-	$.motion.ParticleSystem.prototype.setZIndex = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setZIndex = function ( val )
 	{
 		if ( this._c ) this._c.style.zIndex = val ;
 	};
 	
-	$.motion.ParticleSystem.prototype.getZIndex = function ()
+	ajsf.motion.ParticleSystem.prototype.getZIndex = function ()
 	{
 		return ( this._c ? this._c.style.zIndex : 0 ) ;
 	};
 	
-	$.motion.ParticleSystem.prototype.getSize = function ()
+	ajsf.motion.ParticleSystem.prototype.getSize = function ()
 	{
 		return this._s ;
 	};
 
-	$.motion.ParticleSystem.prototype.setSize = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setSize = function ( val )
 	{
 		this._s = val ;
 	};
 	
-	$.motion.ParticleSystem.prototype.getImage = function ()
+	ajsf.motion.ParticleSystem.prototype.getImage = function ()
 	{
 		return this._image ;
 	};
 
-	$.motion.ParticleSystem.prototype.setImage = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setImage = function ( val )
 	{
 		this._image = val ;
 		this._destroyPool () ;
 	};
 
-	$.motion.ParticleSystem.prototype.getNumber = function ()
+	ajsf.motion.ParticleSystem.prototype.getNumber = function ()
 	{
 		return this._n ;
 	};
 
-	$.motion.ParticleSystem.prototype.setNumber = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setNumber = function ( val )
 	{
 		this._n = val ;
 	};
 
-	$.motion.ParticleSystem.prototype.getVelocity = function ()
+	ajsf.motion.ParticleSystem.prototype.getVelocity = function ()
 	{
 		return this._velocity ;
 	};
 
-	$.motion.ParticleSystem.prototype.setVelocity = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setVelocity = function ( val )
 	{
 		this._velocity = val ;
 		this._destroyPool () ;
 	};
 	
-	$.motion.ParticleSystem.prototype.getGravity = function ()
+	ajsf.motion.ParticleSystem.prototype.getGravity = function ()
 	{
 		return this._gravity ;
 	};
 
-	$.motion.ParticleSystem.prototype.setGravity = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setGravity = function ( val )
 	{
 		this._gravity = val ;
 	};
 	
-	$.motion.ParticleSystem.prototype.getWind = function ()
+	ajsf.motion.ParticleSystem.prototype.getWind = function ()
 	{
 		return this._wind ;
 	};
 
-	$.motion.ParticleSystem.prototype.setWind = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setWind = function ( val )
 	{
 		this._wind = val ;
 	};
 	
-	$.motion.ParticleSystem.prototype.getEmitter = function ()
+	ajsf.motion.ParticleSystem.prototype.getEmitter = function ()
 	{
 		return this._emitter ;
 	};
 
-	$.motion.ParticleSystem.prototype.setEmitter = function ( val )
+	ajsf.motion.ParticleSystem.prototype.setEmitter = function ( val )
 	{
 		this._emitter = val ;
 	};
 	
-	$.motion.Particle = function ( container , velocity , lifetime , img , size )
+	ajsf.motion.Particle = function ( container , velocity , lifetime , img , size )
 	{
 
 		this._c = container ;
 		this._image = img ;
 		this._velocity = velocity ;
 		
-		this._e = $.create(null,'img') ;
+		this._e = ajsf.create(null,'img') ;
 		
 		this._css = 'position:absolute;display:block;background:transparent;border:0;width:' + size.w() + ';height:' + size.h() + ' ;z-index:'+Math.rand(100)+';' ;
 		
@@ -296,12 +296,12 @@
 		this._opacity = 0.5 ;
 	};
 
-	$.motion.Particle.prototype.detach = function ()
+	ajsf.motion.Particle.prototype.detach = function ()
 	{
 		this._c.removeChild(this._e) ;
 	};
 
-	$.motion.Particle.prototype.attach = function ( emitter )
+	ajsf.motion.Particle.prototype.attach = function ( emitter )
 	{
 		if ( this._c && this._e && emitter )
 		{
@@ -318,7 +318,7 @@
 		}
 	};
 	
-	$.motion.Particle.prototype.destroy = function ()
+	ajsf.motion.Particle.prototype.destroy = function ()
 	{
 		this.detach () ;
 		this._c = null ;
@@ -327,7 +327,7 @@
 		
 	};
 
-	$.motion.Particle.prototype.update = function (timeDif, gravity, wind)
+	ajsf.motion.Particle.prototype.update = function (timeDif, gravity, wind)
 	{
 		var vx = Math.rand(this._velocity.x()) + wind ,
 			vy = Math.rand(this._velocity.y()) + gravity;

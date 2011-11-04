@@ -14,7 +14,7 @@
  */
 (function (){
 	
-	$.address = {
+	ajsf.address = {
 		
 		hidePopupOnChange: true,
 			
@@ -36,7 +36,7 @@
 		{
 			this.prependToTitle = _d.title ;
 			
-			_(window).addListener ( 'hashchange' , $.delegate ( this , '_update' ) ) ;
+			_(window).addListener ( 'hashchange' , ajsf.delegate ( this , '_update' ) ) ;
 		},
 		
 		gotoPrevious: function ()
@@ -57,9 +57,9 @@
 
 			this._history.push( this._current ) ;
 			
-			if ( this.hidePopupOnChange && $.popup )
+			if ( this.hidePopupOnChange && ajsf.popup )
 			{
-				$.popup.destroyAll () ;
+				ajsf.popup.destroyAll () ;
 			}
 			
 			var main = this.getCurrentHashAtIndex(0) ;
@@ -174,7 +174,7 @@
 			
 	};
 	
-	$.address.initialize () ;
+	ajsf.address.initialize () ;
 	
 })(); 
 

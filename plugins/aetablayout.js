@@ -621,7 +621,7 @@
 			this.container = container ;
 			this.index = index ;
 	
-			button.on ( 'click', $.delegate(this,'show') ) ;
+			button.on ( 'click', ajsf..delegate(this,'show') ) ;
 		},
 		/*
 			Function: show
@@ -704,7 +704,7 @@
 				evt = 'change' ;
 			}
 			
-			this._a.on ( evt, $.delegate(this,'show') ) ;
+			this._a.on ( evt, ajsf..delegate(this,'show') ) ;
 			
 		},
 

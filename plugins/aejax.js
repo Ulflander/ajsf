@@ -24,7 +24,7 @@
 	
 
     /**
-	 * Ajax methods available for selected elements using _() function or $.get() method.
+	 * Ajax methods available for selected elements using _() function or ajsf.get() method.
 	 */
     ajsf.registerInterface ({
 		
@@ -78,9 +78,9 @@
 		    } catch(e) {};
 		}
 				
-		if ( is($.aejax.globalCallback,"function") )
+		if ( is(ajsf.aejax.globalCallback,"function") )
 		{
-		    $.aejax.globalCallback(_(this));
+		    ajsf.aejax.globalCallback(_(this));
 		}
 				
 		if ( this.onUpdate )
@@ -213,7 +213,7 @@
 	    if ( this.postMode == false )
 	    {
 		this.xhr.open("GET",(parameters == '' ? this._gateway : this._gateway + "?" + parameters), true );
-		this.xhr.onreadystatechange = $.delegate(this,"_onChange") ;
+		this.xhr.onreadystatechange = ajsf.delegate(this,"_onChange") ;
 		if(this.sendAenoaHeaders)
 		{
 		    this.srh("Aenoa-Ajax-Connection", "true");
@@ -228,7 +228,7 @@
 		this.xhr.send('') ;
 	    } else {
 		this.xhr.open("POST",this._gateway , true);
-		this.xhr.onreadystatechange = $.delegate(this,"_onChange") ;
+		this.xhr.onreadystatechange = ajsf.delegate(this,"_onChange") ;
 		this.srh("Content-type", "application/x-www-form-urlencoded");
 		
 		if ( b.Chrome == false )
@@ -282,7 +282,7 @@
 		}
 		if ( this.aenoaMode )
 		{
-		    this._js = $.aejson.fromjson ( this._sr ) ;
+		    this._js = ajsf.aejson.fromjson ( this._sr ) ;
 					
 		    this._success = this._js['success']?this._js['success'] : false ;
 					
@@ -314,7 +314,7 @@
     {
 	if ( this.aenoaMode )
 	{
-	    return $.aejson.tojson(this._d);
+	    return ajsf.aejson.tojson(this._d);
 	}
 	var str = [] , k ;
 	for ( k in this._d )
@@ -356,7 +356,7 @@
     _aexhr: function () {
 	this.xhr = null;
 			
-	if($.isIE) {
+	if(ajsf.isIE) {
 	    try {
 		this.xhr = new ActiveXObject("Msxml2.XMLHTTP");
 	    } catch (e) {
@@ -462,19 +462,19 @@ ajsf.aejax = {
 		
     detail: function (source, title, element)
     {
-	if ( !this.detailManager && $.popup )
+	if ( !this.detailManager && ajsf.popup )
 	{
-	    this.detailManager = $.popup.detail ;
+	    this.detailManager = ajsf.popup.detail ;
 	}
 			
 	if ( this.detailManager && is(this.detailManager.onLoadDetails,"function" ) )
 	{
 	    this.detailManager.beforeLoadDetails(title,element);
-	    var a = new Aejax ( $.URL + 'api' ) ;
+	    var a = new Aejax ( ajsf.URL + 'api' ) ;
 	    a.setService ( 'core::Data::getOneAndChilds' ) ;
 	    a.addData ( 'source' , source ) ;
 	    a.addData ( 'keysAsLabel' , true ) ;
-	    a.onEnd = $.delegate ( this.detailManager, "onLoadDetails" ) ;
+	    a.onEnd = ajsf.delegate ( this.detailManager, "onLoadDetails" ) ;
 	    a.postMode = true ;
 	    a.aenoaMode = true ;
 	    a.connect () ;

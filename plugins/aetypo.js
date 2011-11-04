@@ -10,8 +10,6 @@
 
 (function(){
 	
-	if (!ajsf) ajsf = {};
-	if (!$) $ = ajsf;
 	
 	/**
 	 * Methods

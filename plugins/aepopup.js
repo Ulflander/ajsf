@@ -7,12 +7,12 @@
 	 * It's requires ACF (Aenoa CSS Framework for internal popup styles).
 	 * But, if you don't want to USE ACF, you can just redefine the popClass variable.
 	 */
-	$.popup = {
+	ajsf.popup = {
 		
 		/**
 		 * 
 		 */
-		_ipopc: "<p><a href='javascript:void(0);' title='Close popup' onclick='$.POP.dipop()'>Close</a></p><iframe id='popup_content'></iframe>" ,
+		_ipopc: "<p><a href='javascript:void(0);' title='Close popup' onclick='ajsf.POP.dipop()'>Close</a></p><iframe id='popup_content'></iframe>" ,
 		
 		_popup: null,
 		
@@ -31,7 +31,7 @@
 		frameStyle: {
 			"width":"100%",
 			"height":"92%",
-			"background":"#fff",
+			"background":"#fff"
 		},
 		
 		_dipop: function ()
@@ -45,7 +45,7 @@
 		dipop: function ()
 		{
 			_('#popup').tweenTo({top: -104}, "regularEaseOut", 1);
-			_('#popup').addListener("motionEnd", $.delegate(this,this._dipop) ) ;
+			_('#popup').addListener("motionEnd", ajsf.delegate(this,this._dipop) ) ;
 		},
 		
 		ipop: function ( url )
@@ -57,7 +57,7 @@
 			
 			this._ipopUrl = url ;
 			
-			$.delayed(50,$.delegate(this,"_ipop"))
+			ajsf.delayed(50,ajsf.delegate(this,"_ipop"))
 		},
 		
 		_ipop: function ( )
@@ -67,7 +67,7 @@
 			_d.body.appendChild(p) ;
 			_('#popup').stylize(this.popStyle) ;
 			_('#popup').tweenTo({top: 0}, "regularEaseOut", 1);
-			$.delayed ( 800, $.delegate(this, "_loadsrc" ) )
+			ajsf.delayed ( 800, ajsf.delegate(this, "_loadsrc" ) )
 			return $;
 		},
 		
@@ -100,7 +100,7 @@
 			createFromScratch: function ( element, title , htmlContent )
 			{
 				var popup = new ajsf.popup.InnerPopup (element) ;
-				popup.getContainer().html(( title ? "<h3>" + title + "</h3>" : '' ) +  '<div id="data-popup-content">' + ( htmlContent ? htmlContent : '' ) + '</div><input type="button" onclick="javascript:$.popup.detail.destroy();" class="right" value="'+$.l10n.get('Close')+'" title="'+$.l10n.get('Close')+'" />' );
+				popup.getContainer().html(( title ? "<h3>" + title + "</h3>" : '' ) +  '<div id="data-popup-content">' + ( htmlContent ? htmlContent : '' ) + '</div><input type="button" onclick="javascript:ajsf.popup.detail.destroy();" class="right" value="'+ajsf.l10n.get('Close')+'" title="'+ajsf.l10n.get('Close')+'" />' );
 				this.current = popup ;
 				return popup ;
 			},
@@ -109,7 +109,7 @@
 			{
 				var popup = new ajsf.popup.InnerPopup (this.element) ;
 				this.current = popup ;
-				popup.getContainer().html( this.title, $.aejax.detailToHTMLList ( data['results'] , ": " , "<strong>" , "</strong>") ) ;
+				popup.getContainer().html( this.title, ajsf.aejax.detailToHTMLList ( data['results'] , ": " , "<strong>" , "</strong>") ) ;
 				popup.refresh () ;
 				return popup ;
 			},
@@ -420,7 +420,7 @@
 			margin: 0,
 			top: "2%",
 			left: "1%",
-			"zIndex":"10002",
+			"zIndex":"10002"
 		},
 		windowContent: {
 			"marginTop": "8%",
@@ -459,16 +459,16 @@
 			if ( this._container )
 				return this._container ;
 
-			var p = this._container = $.create(null,null,'data-popup no-list-style');
+			var p = this._container = ajsf.create(null,null,'data-popup no-list-style');
 			p.setAttribute ( "style" , ajsf.popup.Dialog.styles.dialog ) ;
 			
-			this._arrow = $.create(null,'div','data-popup-arrow');
+			this._arrow = ajsf.create(null,'div','data-popup-arrow');
 			
 			_d.body.appendChild(this._container) ;
 			_d.body.appendChild(this._arrow) ;
 			
-			ajsf.addScrollCB('detail', $.delegate(this,'refresh') );
-			_(window).on ('resize', $.delegate(this,'refresh')) ;
+			ajsf.addScrollCB('detail', ajsf.delegate(this,'refresh') );
+			_(window).on ('resize', ajsf.delegate(this,'refresh')) ;
 			
 			return this._container ;
 		},

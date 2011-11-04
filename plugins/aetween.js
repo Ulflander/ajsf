@@ -140,9 +140,9 @@
 			
 			if(destroyOnEnd===true)
 			{
-				p.onMotionEnd=$.delegate(this,'destroy');
+				p.onMotionEnd=ajsf.delegate(this,'destroy');
 			}else{
-				p.onMotionEnd=$.delegate(this,'hide');
+				p.onMotionEnd=ajsf.delegate(this,'hide');
 			}
 			this.tween({opacity:1},{opacity:0},"regularEaseOut",d,p);
 			return this;
@@ -223,7 +223,7 @@
 			
 			if(destroyOnEnd===true)
 			{
-				p.onMotionEnd=$.delegate(this,'destroy');
+				p.onMotionEnd=ajsf.delegate(this,'destroy');
 			}
 			return this.tweenTo(propTo,"regularEaseOut",duration,p);
 		},
@@ -243,7 +243,7 @@
 		{
 			if(!params)params={};
 			params.dispatcher=this;
-			$.tweener.tween(this.style,props,easing,duration,params);
+			ajsf.tweener.tween(this.style,props,easing,duration,params);
 			return this;
 		},
 		/*
@@ -254,7 +254,7 @@
 		*/
 		stop:function()
 		{
-			$.tweener.stopByTarget(this.style);
+			ajsf.tweener.stopByTarget(this.style);
 			return this;
 		},
 		/*
@@ -265,7 +265,7 @@
 		*/
 		cancelTweens:function()
 		{
-			$.tweener.stopByTarget(this.style,true);
+			ajsf.tweener.stopByTarget(this.style,true);
 			return this;
 		},
 		/*
@@ -296,7 +296,7 @@
 			}
 			if(!params)params={};
 			params.dispatcher=this;
-			$.tweener.tween(this.style,propsTo,easing,duration,params);
+			ajsf.tweener.tween(this.style,propsTo,easing,duration,params);
 			return this;
 		},
 		/*
@@ -325,7 +325,7 @@
 			}
 			if(!params)params={};
 			params.dispatcher=this;
-			$.tweener.tween(this.style,propsTo,easing,duration,params);
+			ajsf.tweener.tween(this.style,propsTo,easing,duration,params);
 			return this;
 		},
 		
@@ -480,15 +480,15 @@
 				this._dispatcher=this._obj;
 			}
 			
-			this._delegation=$.delegate(this,'_update');
+			this._delegation=ajsf.delegate(this,'_update');
 			
-			$.tweener.registerTween(this);
+			ajsf.tweener.registerTween(this);
 			
 			if(this._delay==0)
 			{
 				this.start();
 			}else{
-				$.delayed(this._delay,$.delegate(this,"start"));
+				ajsf.delayed(this._delay,ajsf.delegate(this,"start"));
 			}
 		},
 	
@@ -532,13 +532,13 @@
 				}
 				if(is(this._obj[k],"string"))
 				{
-					p=parseFloat(String(this._obj[k]).replace($.tweener._regex,""));
-					p2=parseFloat(String(props[k]).replace($.tweener._regex,""));
+					p=parseFloat(String(this._obj[k]).replace(ajsf.tweener._regex,""));
+					p2=parseFloat(String(props[k]).replace(ajsf.tweener._regex,""));
 		
 						this._propsFrom[k]=p;
 						_props[k]=p2;
 		
-						res=this._obj[k].match($.tweener._regex);
+						res=this._obj[k].match(ajsf.tweener._regex);
 						if(res!=null)
 						{
 							this._suffixes[k]=res[0];
@@ -595,7 +595,7 @@
 				
 				this.isPlaying=true;
 		
-				$.timer.registerEnterFrame(this._delegation);
+				ajsf.timer.registerEnterFrame(this._delegation);
 				
 			}
 		},
@@ -607,9 +607,9 @@
 			if(this.isPlaying==true){
 				this.isPlaying=false;
 				
-				$.timer.unregisterEnterFrame(this._delegation);
+				ajsf.timer.unregisterEnterFrame(this._delegation);
 		
-				$.tweener.unregisterTween(this);
+				ajsf.tweener.unregisterTween(this);
 			}
 		},
 		/*
@@ -621,7 +621,7 @@
 			this._time=(new Date()).getTime()-this._startTime;
 			if(this._time>=this._duration)
 			{
-				$.timer.unregisterEnterFrame(this._delegation);
+				ajsf.timer.unregisterEnterFrame(this._delegation);
 		
 				this._time=this._duration;
 		
@@ -636,7 +636,7 @@
 					this._onMotionEnd();
 				}
 				
-				$.tweener.unregisterTween(this);
+				ajsf.tweener.unregisterTween(this);
 			}else{
 				this._apply();
 			}

@@ -93,7 +93,7 @@
 			this.__console._expanded = false ;
 			this.__console._switching = false ;
 
-			var expandConsole = $.delegate ( this.__console , function () {
+			var expandConsole = ajsf.delegate ( this.__console , function () {
 				if ( this._switching == true )
 				{
 					return;
@@ -106,16 +106,16 @@
 					this.tweenTo ( {width:400} , "regularEaseOut" , 0.5 ) ;
 					this._expanded = false ;
 				} else {
-					this.tweenTo ( {width:$.viewport.getWidth()-60} , "regularEaseOut" , 0.5 ) ;
+					this.tweenTo ( {width:ajsf.viewport.getWidth()-60} , "regularEaseOut" , 0.5 ) ;
 					this._expanded = true ;
 				}
 			}) ;
 			
-			var updateConsole = $.delegate ( this.__console , function () {
+			var updateConsole = ajsf.delegate ( this.__console , function () {
 				this._switching = false ;
 			}) ;
 
-			var hideConsole = $.delegate ( this.__console , function () {
+			var hideConsole = ajsf.delegate ( this.__console , function () {
 				if ( this._switched == true && this._switching == false )
 				{
 					this.tweenTo ( {left:-390} , "regularEaseOut" , 0.5 ) ;
@@ -149,11 +149,11 @@
 		}
 	} ;
 	
-	$.registerInterface ( {
-		pr: $.delegate(ajsf_DEBUG , "pr" )
+	ajsf.registerInterface ( {
+		pr: ajsf.delegate(ajsf_DEBUG , "pr" )
 	} ) ;
 	
-	ajsf.ready ($.delegate( ajsf_DEBUG, "initConsole" ));
+	ajsf.ready (ajsf.delegate( ajsf_DEBUG, "initConsole" ));
 	
 	ajsf.load('aetween');
 		

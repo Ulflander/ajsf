@@ -27,15 +27,15 @@
 			
 			this._dragging = false ;
 		
-			this._delegation = $.delegate(this,'_onEF') ;
+			this._delegation = ajsf.delegate(this,'_onEF') ;
 			
 			// prevent text selection in IE 
 			_d.onselectstart = function () { return false; };
 			// prevent IE from trying to drag an image 
 			this._e.addListener ( 'dragstart', function() { return false;} ); 
 			
-			this._delMouseDown = $.delegate(this,'_onPress') ;
-			this._delMouseUp = $.delegate(this,'_onRelease') ;
+			this._delMouseDown = ajsf.delegate(this,'_onPress') ;
+			this._delMouseUp = ajsf.delegate(this,'_onRelease') ;
 			
 			this._e.addListener ( 'mousedown' , this._delMouseDown ) ;
 			this._e.addListener ( 'mouseup' , this._delMouseUp ) ;
@@ -122,8 +122,8 @@
 			if ( this._dragging == false && this._activated == true )
 			{
 				this._dragging = true ;
-				//$.timer.registerEnterFrame(this._delegation);
-				$.prevent(e);
+				//ajsf.timer.registerEnterFrame(this._delegation);
+				ajsf.prevent(e);
 				
 				_d.addListener('mousemove',this._delegation);
 				
@@ -139,7 +139,7 @@
 		{
 			if ( this._dragging == true )
 			{
-				//$.timer.unregisterEnterFrame(this._delegation);
+				//ajsf.timer.unregisterEnterFrame(this._delegation);
 				_d.remListener('mousemove',this._delegation);
 				if (  this._activated == true )
 				{
@@ -147,13 +147,13 @@
 					
 				}
 				this._dragging = false ;
-				$.prevent(e);
+				ajsf.prevent(e);
 			}
 		},
 		
 		_onEF: function ()
 		{
-			var p = (this._e ? this._e.offsetParent : null ), x = $.mouse.mouseX , y = $.mouse.mouseY ;
+			var p = (this._e ? this._e.offsetParent : null ), x = ajsf.mouse.mouseX , y = ajsf.mouse.mouseY ;
 	
 			if( !p || this._activated == false ) {
 				this._onRelease () ;

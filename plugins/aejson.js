@@ -11,7 +11,7 @@
 
 (function (){
 	
-    $.aejson = {
+    ajsf.aejson = {
 			
 	/*
 		Funcion= tojson

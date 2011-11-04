@@ -12,7 +12,7 @@
 
 (function (){
 	
-$.GridHelper = function ( container , w , margin , mode )
+ajsf.GridHelper = function ( container , w , margin , mode )
 {
 	this._ctn = container ;
 	
@@ -36,7 +36,7 @@ $.GridHelper = function ( container , w , margin , mode )
 		
 		for ( i ; i< l ; i++ )
 		{
-			n = $.i(nodes[i]) ;
+			n = ajsf.i(nodes[i]) ;
 			
 			if ( n.h() > h )
 				h = n.h () ;
@@ -74,7 +74,7 @@ $.GridHelper = function ( container , w , margin , mode )
 			while( ++i < l )
 			{
 				theta = alpha * i;
-				$.i(this._ctn.childNodes[i]).setPos ( Math.sin( theta ) * radius, Math.cos( theta ) * radius );
+				ajsf.i(this._ctn.childNodes[i]).setPos ( Math.sin( theta ) * radius, Math.cos( theta ) * radius );
 			}
 		} else {
 			c = Math.ceil ( l / 60 ) + 1 ;
@@ -95,7 +95,7 @@ $.GridHelper = function ( container , w , margin , mode )
 				while( k++ < l2 && i++ < l )
 				{
 					theta = alpha * i;
-					$.i(this._ctn.childNodes[i]).setPos ( Math.sin( theta ) * radius, Math.cos( theta ) * radius );
+					ajsf.i(this._ctn.childNodes[i]).setPos ( Math.sin( theta ) * radius, Math.cos( theta ) * radius );
 				}
 				l2 -= 5 ;
 				radius -= 32 ;

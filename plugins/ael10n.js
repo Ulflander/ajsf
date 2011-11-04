@@ -12,7 +12,7 @@
 
 (function (){
 	
-$.l10n = {
+ajsf.l10n = {
 	
 	/*
 		Variable: _dic
