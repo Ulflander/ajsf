@@ -704,7 +704,7 @@
 				evt = 'change' ;
 			}
 			
-			this._a.on ( evt, ajsf..delegate(this,'show') ) ;
+			this._a.on ( evt, ajsf.delegate(this,'show') ) ;
 			
 		},
 
