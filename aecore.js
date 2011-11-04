@@ -1349,7 +1349,14 @@
 			Private
 		*/
 		_urlizeRules: [],
-		
+
+		compatMode: function ()
+		{
+			
+			glob('$', null);
+
+		},
+
 		/*
 			Function: toString
 			
@@ -2302,7 +2309,7 @@
 			sc = _d.createElement('script') ;
 			sc.setAttribute("type","text/javascript");
 			sc.setAttribute("src", plugin ) ;
-			_(sc).addListener("load",ajsf.delegate($,"_onPluginLoad"));
+			_(sc).addListener("load",ajsf.delegate(ajsf,"_onPluginLoad"));
 			_d.getElementsByTagName('head')[0].appendChild(sc);
 
 		},
@@ -3763,7 +3770,7 @@
 	*/
 	glob('$', glob('ajsf', ajsf) ) ;
 	
-	
+
 	/*
 		Init mouse
 		
