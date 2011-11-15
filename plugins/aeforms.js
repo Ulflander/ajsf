@@ -365,12 +365,19 @@ ajsf.aeforms = {
 			{
 				if ( this._suggestionsCtn )
 				{
-					var e =  this._suggestionsCtn ;
+				    var e =  this._suggestionsCtn ;
+				    
+				    f = function () {
 					
 					e.setLeft( e.input.getLeft() ) ;
 					e.setTop( e.input.getTop () + e.input.h () ) ;
 					e.scrollTop = 0 ;
 					e.stylize ('width', e.input.w () + 'px' ) ;
+				    };
+				    
+				    f () ;
+				    
+				    ajsf.delayed(100,f) ;
 				}
 			},
 			
@@ -1075,5 +1082,6 @@ ajsf.registerInterface ( {
 } );
 
 _(window).addListener ('resize', ajsf.delegate(ajsf.aeforms.suggestions,'_windowResizeHandler')) ;
+ajsf.addWheelListener (ajsf.delegate(ajsf.aeforms.suggestions,'_windowResizeHandler')) ;
 	
 }() ); 

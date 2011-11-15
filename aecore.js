@@ -930,12 +930,25 @@
 			{
 				var r = 0, o = this;
 				while( o !== null && o !== parent ) {
-					r += o.offsetLeft - o.scrollLeft;
-					o = o.offsetParent;
+					r += o.offsetLeft;
+					
+					if (o != _d.body && o != _d.documentElement) {
+					    r -= o.scrollLeft ;
+					}
+					
 					if ( abs === false )
 					{
 						break;
 					}
+					
+					o2 = o ;
+					
+					while ( o2.parentNode!=o.offsetParent) {
+					    o2 = o2.parentNode;
+					    r -= o2.scrollLeft || 0 ;
+				       }
+					
+					o = o.offsetParent;
 				}
 				return r;
 			},
@@ -950,14 +963,28 @@
 		*/
 			getTop: function ( abs , parent )
 			{
-				var r = 0, o = this;
+				var r = 0, o = this, o2;
 				while( o !== null && o !== parent ) {
-					r += o.offsetTop - o.scrollTop;
-					o = o.offsetParent;
+					
+					r += o.offsetTop;
+					
+					if (o != _d.body && o != _d.documentElement) {
+					    r -= o.scrollTop ;
+					}
+					
 					if ( abs === false )
 					{
 						break;
 					}
+					
+					o2 = o ;
+					
+					while ( o2.parentNode!=o.offsetParent) {
+					    o2 = o2.parentNode;
+					    r -= o2.scrollTop || 0 ;
+				       }
+					
+					o = o.offsetParent;
 				}
 				return r;
 			},
