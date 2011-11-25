@@ -1631,7 +1631,7 @@
 			Good to know: the delegate method creates a variable into context named __caller that identifies context from where delegated method has been called.
 			That's particularly usefull on event catching
 		
-			<example>
+			(start code)
 			<input type="button" id="test-delegation" value="Click !" />
 		
 			<script type="text/javascript">
@@ -1651,9 +1651,8 @@
 				_('#test-delegation').on('click', delegatedMethod) ;
 		
 			</script>
+			(end)
 			
-			</example>
-		
 			Parameters:
 				context - [Object] that contain the method to call
 				method - The method name or a function object
