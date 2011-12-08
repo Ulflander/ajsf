@@ -2,22 +2,22 @@
 
 (function (){
 	
-	if ( !window.ajsf ) return ;
-	if ( !window.google || !window.google.maps ) return ;
-	if ( !ajsf.maps ) ajsf.maps = {} ;
-	/*
+    if ( !window.ajsf ) return ;
+    if ( !window.google || !window.google.maps ) return ;
+    if ( !ajsf.maps ) ajsf.maps = {} ;
+    /*
 	(function(namespace) {
 	    var mask_paths = [[
-	        new google.maps.LatLng( 90, -180),
+	        new google.maps.LatLng( 90, -360),
 	        new google.maps.LatLng( 90, 0),
 	        new google.maps.LatLng(-90, 0),
-	        new google.maps.LatLng(-90, -180)
+	        new google.maps.LatLng(-90, -360)
 	    ], [
-	        new google.maps.LatLng( 90, -180),
-	        new google.maps.LatLng( 90, 0.000001),
-	        new google.maps.LatLng(-90, 0.000001),
-	        new google.maps.LatLng(-90, -180)
-	    ]];
+	        new google.maps.LatLng( 90, -360),
+	        new google.maps.LatLng( 90, 0),
+	        new google.maps.LatLng(-90, 0),
+	        new google.maps.LatLng(-90, -360)
+	    ] ] ;
 	
 	    namespace.Mask = function(options) {
 	    	
@@ -28,9 +28,9 @@
 	        this.fillOpacity = 0.6;
 	        this.map = null;
 	        this.paths = [];
-	        this.strokeColor = "#FFFFFF";
-	        this.strokeOpacity = 1;
-	        this.strokeWeight = 2;
+	        this.strokeColor = "#ff0000";
+	        this.strokeOpacity = 0;
+	        this.strokeWeight = 0;
 	        this.zIndex = -100;
 	        this.setOptions(options);
 	    };
@@ -56,7 +56,7 @@
 	        this.mask_.setOptions({
 	            fillColor: this.fillColor,
 	            fillOpacity: this.fillOpacity,
-	            strokeWeight: 0,
+	            strokeWeight: 1,
 	            strokeOpacity: 0,
 	            zIndex: this.zIndex,
 	            map: this.map
@@ -72,66 +72,69 @@
 	        });
 	    };
 	})(ajsf.maps);
-*/
-	ajsf.maps.Mask = ajsf.Class.extend( {
+    */
+    ajsf.maps.Mask = ajsf.Class.extend( {
 		
-		maskPaths: [[
-		               new google.maps.LatLng( 90, -180),
-		               new google.maps.LatLng( 90, 0),
-		               new google.maps.LatLng(-90, 0),
-		               new google.maps.LatLng(-90, -180)
-		           ], [
-		               new google.maps.LatLng( 90, -180),
-		               new google.maps.LatLng( 90, 0.000001),
-		               new google.maps.LatLng(-90, 0.000001),
-		               new google.maps.LatLng(-90, -180)
-		           ]],
+	maskPaths: [[
+	    new google.maps.LatLng( 90, 360),
+	    new google.maps.LatLng( 90, 0),
+	    new google.maps.LatLng(-90, 0),
+	    new google.maps.LatLng(-90, 360)
+	], [
+	    new google.maps.LatLng( 90, 360),
+	    new google.maps.LatLng( 90, 0),
+	    new google.maps.LatLng(-90, 0),
+	    new google.maps.LatLng(-90, 360)
+	]],
 		           
-		construct: function ( options ) {
-	        this.mask_ = new google.maps.Polygon();
-	        this.polygon_ = new google.maps.Polygon();
+	construct: function ( options ) {
+	    this.mask_ = new google.maps.Polygon();
+	    this.polygon_ = new google.maps.Polygon();
 	
-	        this.fillColor = "#000000";
-	        this.fillOpacity = 0.6;
-	        this.map = null;
-	        this.paths = [];
-	        this.strokeWeight = 0;
-	        this.zIndex = -100;
-	        this.setOptions(options);
-		},
-		setMap: function(map) {
-	        this.mask_.setMap(map);
-	        this.polygon_.setMap(map);
-	        this.map = map;
-	    },
+	    this.fillColor = "#000000";
+	    this.fillOpacity = 0.6;
+	    this.map = null;
+	    this.paths = [];
+	    this.strokeWeight = 0;
+	    this.strokeOpacity = 0;
+	    this.zIndex = 0;
+	    this.setOptions(options);
+	},
+	setMap: function(map) {
+	    this.mask_.setMap(map);
+	    this.polygon_.setMap(map);
+	    this.map = map;
+	},
 
-	    setPaths: function(paths) {
-	        this.mask_.setPaths(this.maskPaths.concat(paths));
-	        this.polygon_.setPaths(paths);
-	        this.paths = paths;
-	    },
+	setPaths: function(paths) {
+	    this.mask_.setPaths(this.maskPaths.concat(paths));
+	    this.polygon_.setPaths(paths);
+	    this.paths = paths;
+	},
 
-	    setOptions: function(options) {
-	        this.setValues(options);
+	setOptions: function(options) {
+	    this.setValues(options);
 
-	        this.mask_.setOptions({
-	            strokeColor: this.strokeColor,
-	            strokeOpacity: 0,
-	            geodesic: this.geodesic_,
-	            strokeWeight: 0,
-	            fillOpacity: 1,
-	            fillColor: this.fillColor,
-	            zIndex: this.zIndex,
-	            map: this.map
-	        });
+	    this.mask_.setOptions({
+		strokeColor: this.strokeColor,
+		strokeOpacity: 0,
+		strokeWeight: 0,
+		geodesic: this.geodesic_,
+		fillColor: this.fillColor,
+		zIndex: this.zIndex,
+		map: this.map
+	    });
 
-	        this.polygon_.setOptions({
-	            geodesic: this.geodesic_,
-	            fillColor: this.fillColor,
-	            fillOpacity: 0,
-	            zIndex: this.zIndex,
-	            map: this.map
-	        });
-	    }
-	}, google.maps.MVCObject );
+	    this.polygon_.setOptions({
+		geodesic: this.geodesic_,
+		fillColor: this.fillColor,
+		strokeOpacity: 0,
+		strokeWeight: 0,
+		fillOpacity: 0,
+		zIndex: this.zIndex,
+		map: this.map
+	    });
+	}
+    }, google.maps.MVCObject );
+    
 }) () ;
