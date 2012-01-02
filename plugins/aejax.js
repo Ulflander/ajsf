@@ -292,7 +292,7 @@
 				
 		if ( this.xhr.getResponseHeader('X-AeServer-redirection') )
 		{
-		    ajsf.redirect ( this.xhr.getResponseHeader('X-AeServer-redirection') ) ;
+		//    ajsf.redirect ( this.xhr.getResponseHeader('X-AeServer-redirection') ) ;
 		}
 				
 		if ( is(this.onEnd,"function") )

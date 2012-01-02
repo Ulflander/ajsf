@@ -12,7 +12,7 @@
 (function(){
 
 	/*
-		ajsf.AeNumericStepper
+		Class: ajsf.AeNumericStepper
 		
 		Creates a numeric stepper
 	*/

@@ -12,7 +12,7 @@
 (function(){
 
 	/*
-		ajsf.AeStringGenerator
+		Class: ajsf.AeStringGenerator
 		
 		This plugin is part of Aenoa Auto Plugins.
 	*/
