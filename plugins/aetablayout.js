@@ -363,8 +363,7 @@
 			
 			if ( !this.unselectCurrent() || !t.button.dispatch ('tabselected') ) return this;
 			
-			if ( t.button.dispatch ('tabshow') 
-					&& this.dispatch('change') )
+			if ( t.button.dispatch ('tabshow') && this.dispatch('change') )
 			{
 				t.button.addClass(this.openedClass);
 				t.button.remClass(this.closedClass);
