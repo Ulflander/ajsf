@@ -468,9 +468,8 @@
 		{
 		    if ( is(key,"object") )
 		    {
-			var j;
 					
-			for ( j in key )
+			for ( var j in key )
 			{
 			    this.style[j] = key[j];
 			}

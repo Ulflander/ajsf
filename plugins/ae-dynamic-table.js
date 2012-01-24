@@ -1,81 +1,84 @@
 
 
 (function (){
-
-	/**
+    
+    ajsf.load('aetablayout');
+    
+    
+    /**
 	 * Create a new dynamic table management system
 	 * @param formObject ajsf.forms.Form Ajaxized form object
 	 * @param table The table DOM element
 	 * 
 	 */
-	ajsf.DynamicTable = ajsf.Class.extend({
+    ajsf.DynamicTable = ajsf.Class.extend({
 		
-		construct: function ( formObject, table ) {
+	construct: function ( formObject, table ) {
 		
-			this._f = formObject ; 
+	    this._f = formObject ; 
 
-			this._t = table ;
+	    this._t = table ;
 
-			this._refresh ( false ) ;
+	    this._refresh ( false ) ;
 
-			var instance = this;
+	    var instance = this;
 			
-			this._t.getParent().on('ajaxUpdate', function(e){
-				instance._refresh ( ) ;
-			}) ; 
+	    this._t.getParent().on('ajaxUpdate', function(e){
+		instance._refresh ( ) ;
+	    }) ; 
 			
-			this._del = ajsf.delegate(this,'submit');
+	    this._del = ajsf.delegate(this,'submit');
 			
-		},
+	},
 		
-		_refresh: function ( isRefresh )
-		{
-			var el = this._t ;
+	_refresh: function ( isRefresh )
+	{
+	    var el = this._t ;
 			
-			el.setAt('data-dyn-table','done');
+	    el.setAt('data-dyn-table','done');
 			
-			el = el.getParent () ;
+	    el = el.getParent () ;
 			
-			if ( el.toString() == '[object HTMLFormElement]' )
-			{
-				el = el.getParent () ;
-			}
+	    if ( el.toString() == '[object HTMLFormElement]' )
+	    {
+		el = el.getParent () ;
+	    }
 			
-			if ( el.getParent().hasClass('ajsf-table-container') )
-			{
-				el = el.getParent () ;
-			}
-			
-			
-			if ( !el || el == _d)
-			{
-				return ;
-			}
+	    if ( el.getParent().hasClass('ajsf-table-container') )
+	    {
+		el = el.getParent () ;
+	    }
 			
 			
-			this._f.setUpdateContainer(el) ;
+	    if ( !el || el == _d)
+	    {
+		return null ;
+	    }
+			
+			
+	    this._f.setUpdateContainer(el) ;
 
-			ajsf.extend(this._f.getInput(0)).on ('keyup', ajsf.delegate(this,'_onKeyup'));
+	    ajsf.extend(this._f.getInput(0)).on ('keyup', ajsf.delegate(this,'_onKeyup'));
 			
-			// Clickable headers
-			var tabLayout = new ajsf.TabLayout ('current','') ;
-			tabLayout.createAjaxTabs ( _u('.table-options',this._t.getParent(),false,false) ,el, true )
-						.createAjaxTabs ( _u('thead',this._t,false,false) , el, true )
-						.createAjaxTabs ( _u('ul',_u('tfoot',this._t)) ,el, true ) ;
+	    // Clickable headers
+	    var tabLayout = new ajsf.TabLayout ('current','') ;
+	    tabLayout.createAjaxTabs ( _u('.table-options',this._t.getParent(),false,false) ,el, true )
+	    .createAjaxTabs ( _u('thead',this._t,false,false) , el, true )
+	    .createAjaxTabs ( _u('ul',_u('tfoot',this._t)) ,el, true ) ;
 
-			this._f.getInput(0).focus () ;
+	    this._f.getInput(0).focus () ;
 			
-			return el ;
-		},
+	    return el ;
+	},
 		
-		_onKeyup: function (e)
-		{
-			ajsf.undelayed(700,this._del);
-			ajsf.delayed(700,this._del);
-		},
-		submit: function ()
-		{
-			this._f.submit () ;
-		}
-	});
+	_onKeyup: function (e)
+	{
+	    ajsf.undelayed(700,this._del);
+	    ajsf.delayed(700,this._del);
+	},
+	submit: function ()
+	{
+	    this._f.submit () ;
+	}
+    });
 }) () ;

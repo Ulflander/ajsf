@@ -250,9 +250,10 @@ ajsf.aeforms = {
 				
 				if ( this._suggestionsCtn == null )
 				{
-					e = _d.createElement('ul');
+					e = ajsf.create(null,'ul');
 					e.setAttribute('id','suggestionsCtn' ) ;
 					e.setAttribute('class','suggestions no-list-style' ) ;
+					e.stylize('position', 'absolute') ;
 					_d.body.appendChild(e) ;
 					this._suggestionsCtn = _(e) ;
 					this._suggestionsCtn.tweenOnDisplay = true; 
@@ -365,19 +366,18 @@ ajsf.aeforms = {
 			{
 				if ( this._suggestionsCtn )
 				{
-				    var e =  this._suggestionsCtn ;
-				    
-				    f = function () {
+				    var e =  this._suggestionsCtn,
+					f = function () {
 					
-					e.setLeft( e.input.getLeft() ) ;
-					e.setTop( e.input.getTop () + e.input.h () ) ;
-					e.scrollTop = 0 ;
-					e.stylize ('width', e.input.w () + 'px' ) ;
-				    };
+					    e.setLeft( e.input.getLeft( true ) , 'px') ;
+					    e.setTop( e.input.getTop ( true ) + e.input.h () , 'px' ) ;
+					    e.scrollTop = 0 ;
+					    e.stylize ('width', e.input.w () + 'px' ) ;
+					};
 				    
-				    f () ;
+				    f() ;
 				    
-				    ajsf.delayed(100,f) ;
+				    ajsf.delayed(20,f) ;
 				}
 			},
 			

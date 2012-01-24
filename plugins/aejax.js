@@ -491,9 +491,10 @@ ajsf.aejax = {
 	    
     detailToHTMLList: function ( data , separator , prefix , suffix )
     {
-	var str = '<ul>',
-	separator = (separator ? separator : ':'),
-	prefix = (prefix ? prefix : '' ),
+	var str = '<ul>' ;
+	
+	separator = (separator ? separator : ':');
+	prefix = (prefix ? prefix : '' );
 	suffix = (suffix ? suffix : '' );
 	    	
 	for ( var k in data )
