@@ -500,6 +500,8 @@
 		if(ajsf.isIE&&!b.IE9){
 		    this.filters.alpha = v*100;
 		}
+		
+		return this ;
 	    },
 	    /*
 			Function: getOpacity
@@ -953,7 +955,7 @@
 		*/
 	    getLeft: function ( abs, parent )
 	    {
-		var r = 0, o = this;
+		var r = 0, o = this, o2;
 		while( o !== null && o !== parent ) {
 		    r += o.offsetLeft;
 					
@@ -1176,27 +1178,26 @@
 		 */
 	    hover: function ( func1, func2 )
 	    {
-		this.__$hov = false ;
-		var e = this,
-		f = function(ev)
-		{
-		    if ( ajsf.mouse.isOutside(e) )
-		    {
-			func2 () ;
-			_d.remListener('mousemove', f ) ;
-			e.__$hov = false ;
-		    }
-		};
+		
+		var self = this ;
+		
 			
-		this.on('mouseover', function (e)
+		this.on('mouseover', function (ev)
 		{
-		    if ( this.__$hov === false )
+		    if ( self.__$hov !== true )
 		    {
-			this.__$hov = true ;
-			func1 ();
-			_d.on('mousemove', f );
+			self.__$hov = true ;
+			ajsf.delegate(self,func1)();
 		    }
 		});
+		
+		this.on('mouseout', function (ev){
+		    var relatedTarget = ajsf.extend(ev.relatedTarget || ev.toElement);
+		    if( self.__$hov == true && relatedTarget!=self && ajsf.isDescendant(self, relatedTarget)==false ) {
+			self.__$hov = false ;
+			ajsf.delegate(self,func2)() ;
+		    }
+		})
 	    },
 		
 	    /*
@@ -1567,8 +1568,7 @@
 	    if (_d.attachEvent)
 	    {
 		_d.attachEvent("on"+e, callback);
-	    } else if (_d.addEventListener)
-{
+	    } else if (_d.addEventListener){
 		_d.addEventListener(e, callback, false);
 	    }
 				    
@@ -2033,7 +2033,7 @@
 		    }
 		}
 	    }
-			
+
 	    // Setting current selection,
 	    this._sel = elements ;
 	    // Return selection
@@ -3091,9 +3091,9 @@
 			*/
 	    isInside: function (obj, margin) {
 		if (!_(obj).getTop) return false;
-		margin = margin || 10 ;
+		margin = margin || 0 ;
 		var x = this.mouseX - obj.getLeft(true), y = this.mouseY - obj.getTop(true) ;
-		return ( x > 0 + margin && x < obj.offsetWidth - margin && y > 0 + margin && y < obj.offsetHeight - margin ) ;
+		return ( x > 0 + margin && x < obj.w() - margin && y > 0 + margin && y < obj.h() - margin ) ;
 	    },
 	    /*
 				Function: isOutside

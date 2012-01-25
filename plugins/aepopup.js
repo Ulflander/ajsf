@@ -88,7 +88,7 @@
 	    var win=window.open(url,popID,'height='+w+',width='+h);
 	    if (window.focus) {
 		win.focus()
-		};
+	    };
 	    return $;
 	},
 		
@@ -164,21 +164,34 @@
 	_wrapper: null,
 	_button: null,
 	_close: null,
+	
 	/**
 		 * Constructor
 		 * 
 		 * @param title [string] Popup title
 		 * @param text [string] Popup text or HTML content
 		 * @param closeText [string] Text of the close button
+		 * @param skinned [boolean] Will the container be skinned
 		 */
-	construct: function ( title , text , closeText )
+	construct: function ( title , text , closeText , skinned )
 	{
 	    ajsf.stylesheets.inject('.ajsf-dialog-wrapper{'+ajsf.stylesheets.stringify(ajsf.popup.Dialog.styles.wrapper)+'}') ;
 	    ajsf.stylesheets.inject('.ajsf-dialog-container{'+ajsf.stylesheets.stringify(ajsf.popup.Dialog.styles.dialog)+'}') ;
+	    ajsf.stylesheets.inject('.ajsf-dialog-skin{'+ajsf.stylesheets.stringify(ajsf.popup.Dialog.styles.dialogSkin)+'}') ;
 			
 	    this._wrapper = ajsf.create(null,'div');
-	    this._close = ajsf.create(null,'a','top right block icon16 close unlabeled ajsf-dialog-close') ;
-			
+	    this._close = ajsf.create(null,'a','top right block icon16 close_alt unlabeled ajsf-dialog-close') ;
+	    
+	    this._close.hover(
+		function()
+		{
+		    this.remClass('close_alt').addClass('close') ;
+		},
+		function()
+		{
+		    this.addClass('close_alt').remClass('close') ;
+		}
+	    ) ;
 	    var container =ajsf.create(null,'div'),
 	    elements = ajsf.createAll([
 		[null,'span'],
@@ -199,7 +212,7 @@
 			
 	    this._close.on ('click',del);
 	    this._button.on ('click',del);
-	    this._wrapper.on ('click', function ()
+	    this._wrapper.on ('click', function (e)
 	    {
 		container.fadeIn () ;
 	    });
@@ -208,8 +221,13 @@
 			
 	    this._wrapper.setAt('class','ajsf-dialog-wrapper');
 	    this._wrapper.setOpacity(0.4);
-
-	    this._container.setAt('class','r-5 shadowed ajsf-dialog-container');
+	    this._container.setClass('ajsf-dialog-container');
+	    
+	    if ( skinned !== false )
+	    {
+		this._container.addClass('r-5 shadowed ajsf-dialog-skin');
+	    }
+	    
 			
 	    if ( instances.length < 2 )
 	    {
@@ -224,6 +242,10 @@
 	    this.setText(text) ;
 
 	    this.dispatch('inited');
+	},
+	getWrapper: function ()
+	{
+	    return this._wrapper ;
 	},
 	getContainer: function ()
 	{
@@ -259,6 +281,10 @@
 	getTextEl: function ()
 	{
 	    return this._text ;
+	},
+	getMainEl: function ()
+	{
+	    return this.getTextEl () ;
 	},
 	setCloseText: function ( text )
 	{
@@ -349,13 +375,16 @@
 	    "top":"50%",
 	    "marginTop":"-100px",
 	    "zIndex":"10010",
+	    "overflow": "hidden"
+	},
+
+	dialogSkin: {
 	    "border":"1px solid #aaa",
 	    "color":"#000",
-	    "overflow": "hidden",
 	    "background":"#eeeeee"
-	},	
+	},
 	innerPopup: {
-	    "zIndex":"10030",
+	    "zIndex":"10030"
 	}
     };
     ajsf.popup.Dialog.instances = [] ;
@@ -411,16 +440,19 @@
 	
 
     ajsf.popup.Window = ajsf.popup.Dialog.extend({
-	construct: function ( title , text , closeText )
+	construct: function ( title , text , closeText , skinned )
 	{
-	    this._super( title , text , closeText ) ;
+	    this._super( title , text , closeText , skinned ) ;
 	    ajsf.stylesheets.inject('.ajsf-dialog-window{'+ajsf.stylesheets.stringify(ajsf.popup.Window.styles.window)+'}') ;
-	    this._build () ;
+	    this._build ( skinned ) ;
 	},
-	_build: function ()
+	_build: function ( skinned )
 	{
 	    this._container.addClass('ajsf-dialog-window');
-	    this._text.stylize(ajsf.popup.Window.styles.windowContent);
+	    if ( skinned !== false )
+	    {
+	       this._text.stylize(ajsf.popup.Window.styles.windowContent);
+	    }
 	    this._button.hide () ;
 	},
 	isWindow: function ()
