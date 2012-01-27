@@ -9,16 +9,12 @@
 	
 		ajsf.stylesheets.inject('.ajsf-lightbox-container{'+ajsf.stylesheets.stringify({
 			'text-align': 'center',
-			'border':'1px solid #111'
+			'border':'1px solid #fff',
+			'height': '98%',
+			'width' : '98%',
+			'padding': '0'
 		})+'}') ;
-	
-		ajsf.stylesheets.inject('.ajsf-lightbox-image{'+ajsf.stylesheets.stringify({
-			'height': '100%',
-			'max-height': '100%',
-			'max-width': '100%;'
-	    
-		})+'}') ;
-	
+		
 		_a('a').forEach ( function ( el )
 		{
 			_a('.lightbox', el).forEach(function(el2)
@@ -44,15 +40,11 @@
 					window.getTitleEl().hide() ;
 					
 					window.getContainer()
-						.addClass('ajsf-lightbox-container')
-						.stylize({
-							'height': '100%',
-							'max-height': img.h(),
-							'max-width': img.w()
-						}).fadeIn() ;
+						.addClass('ajsf-lightbox-container shadowed')
+						.fadeIn() ;
+
 		    
-		    
-					window.getWrapper().setOpacity(1).on('click', _destroy ).fadeIn() ;
+					window.getWrapper().setOpacity(0.5).on('click', _destroy ).fadeIn() ;
 
 				}) ;
 			});

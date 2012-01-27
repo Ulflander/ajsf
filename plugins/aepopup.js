@@ -155,6 +155,8 @@
 	
 	
 	/**
+	 * Class: ajsf.popup.Dialog
+	 *
 	 * This is the base class of all popups.
 	 */
 	ajsf.popup.Dialog = ajsf.AbstractEvtDispatcher.extend({
@@ -400,7 +402,10 @@
 		return ajsf.popup.Dialog.instances.length ;
 	}
 	
-	
+	/*
+	 *
+	 * Class: ajsf.popup.ConfirmDialog
+	 */
 	ajsf.popup.ConfirmDialog = ajsf.popup.Dialog.extend({
 		_okBtn: null,
 
@@ -445,6 +450,10 @@
 	});
 	
 
+	/*
+	 *
+	 * Class: ajsf.popup.Window
+	 */
 	ajsf.popup.Window = ajsf.popup.Dialog.extend({
 		construct: function ( title , text , closeText , skinned )
 		{
@@ -487,7 +496,11 @@
 	
 	ajsf.popup.instance = null ;
 	
-	
+
+	/*
+	 *
+	 * Class: ajsf.popup.InnerPopup
+	 */
 	ajsf.popup.InnerPopup = ajsf.Class.extend({
 
 		

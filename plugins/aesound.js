@@ -11,7 +11,7 @@
 (function(){
 	
 	/*
-		AJSF Sound Class
+		Class: ajsf.Sound
 	*/
 	 
 	ajsf.Sound = ajsf.Class.extend({

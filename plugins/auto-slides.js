@@ -13,9 +13,7 @@
     
     }) ;
     /*
-	    Class: ajsf.AeTestUnit
-
-	    Used to make test unit on Javascript code
+	    Class: ajsf.AutoSlides
 	*/
     ajsf.AutoSlides = ajsf.Class.extend({
 		
