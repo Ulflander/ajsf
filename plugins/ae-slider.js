@@ -131,10 +131,21 @@
 	    this.__page( page ) ;
 	},
 	
+	getCurrent: function ()
+	{
+	    return this._current ;
+	},
+	
+	getTotal: function ()
+	{
+	    return this._length ;
+	},
+	
 	__page: function ( page )
 	{
 	    
 	    var i = 0 ,
+		self = this,
 		prev = this._els[this._current],
 		next = this._els[page] ,
 		delta = page > this._current ? 1 : -1 ;
@@ -150,16 +161,13 @@
 	    
 	    this._current = page ;
 	    
+	    this.dispatch ( 'page' ) ;
+	    
 	    if ( prev )
 	    {
 		var t = new ajsf.Transition ( 'HSlide' , prev , next, delta ) ;
-		
-		t.on ( 'end', ajsf.delegate(this, function(){
-		    this.dispatch('page')
-		})) ;
 	    } else {
 	       next.show () ;
-		this.dispatch ( 'page' ) ;
 	    }
 	    
 	
