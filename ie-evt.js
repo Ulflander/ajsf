@@ -1,5 +1,8 @@
 
 	/*
+		
+		Package: ajsf.IE
+
 		This interface overrides AJSF core event handling (AJSF core event handling is based on browser event handling) for all IE-considered custom events.
 		
 		It has been done to handles custom events in IE < 9 but it works in all browsers, all versions.

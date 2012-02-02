@@ -1,14 +1,4 @@
 
-
-/**********************************
-*AJSF-AenoaJavascriptFramework
-*(c)XavierLaumonier2010-2011
-*
-*Since:
-*Author:XavierLaumonier
-*
-**********************************/
-
 /*
 	
 */
@@ -16,21 +6,39 @@
 (function(){
 
 	/*
-		Tweenmanager
+		Package: ajsf.tweener
+
+		These methods can be accessed only using ajsf.tweener reference:
+
+		(start code)
+
+		<div id="myElement"></div>
+
+		<script type="text/javascript">
+
+			ajsf.load('aetween').ready(function(){
+
+				ajsf.tweener.tween ( _('#myElement') , {top: '10px'} , {top: '20px'} ) ;
+
+			});
+
+		</script>
+
+		(end)
 	*/
 	ajsf.tweener={
 				
-			/*
-				Variable:__tw
+		/*
+				Variable: __tw
 				
 				Private
 			*/
-			__tw:[],
+		__tw:[],
 			
-			/*
-				Function:tween
+		/*
+				Function: tween
 				
-				Createanewtweenobject
+				Create a new tween
 				
 				Parameters:
 					obj
@@ -41,98 +49,115 @@
 					
 				Returns:
 			*/
-			tween:function(obj,propsFrom,propsTo,easing,duration)
-			{
-				var t=new ajsf.Tween(obj,propsFrom,propsTo,easing,duration);
-				return t;
-			},
+		tween:function(obj,propsFrom,propsTo,easing,duration)
+		{
+			var t=new ajsf.Tween(obj,propsFrom,propsTo,easing,duration);
+			return t;
+		},
 				
-			/*
-				Function:registerTween
-				
+		/*
+				Function: registerTween
+
+				Add a new tween in global tweens array
+
 				Parameters:
 					tween
 			*/
-			registerTween:function(tween)
-			{
-				this.__tw.push(tween);
-			},
+		registerTween:function(tween)
+		{
+			this.__tw.push(tween);
+		},
 			
-			/*
-				Function:unregisterTween
-				
+		/*
+				Function: unregisterTween
+
+				Remove a tween from the global tweens array
+
 				Parameters:
 					tween
 			*/
-			unregisterTween:function(tween)
+		unregisterTween:function(tween)
+		{
+			for(var k in this.__tw)
 			{
-				for(var k in this.__tw)
+				if(this.__tw[k]===tween)
 				{
-					if(this.__tw[k]===tween)
+					delete(this.__tw[k]);
+					break;
+				}
+			}
+		},
+				
+		/*
+			Function: stopByTarget
+
+			Resume or stop all tweens given a target
+
+			Parameters:
+				obj
+				stop
+		*/
+		stopByTarget:function(obj,stop)
+		{
+			for(var k in this.__tw)
+			{
+				if(this.__tw[k].getTarget()===obj)
+				{
+					if(stop===true)
 					{
-						delete(this.__tw[k]);
-						break;
+						this.__tw[k].stop();
+					}else{
+						this.__tw[k].resume();
 					}
 				}
-			},
-				
-			/*
-				Function:stopByTarget
-				
-				Parameters:
-					obj
-					stop
-			*/
-			stopByTarget:function(obj,stop)
-			{
-				for(var k in this.__tw)
-				{
-					if(this.__tw[k].getTarget()===obj)
-					{
-						if(stop===true)
-						{
-							this.__tw[k].stop();
-						}else{
-							this.__tw[k].resume();
-						}
-					}
-				}
-			},
-	
-			/*
-				Variable:_regex
-				
-				Private
-			*/
-			_regex:new RegExp("in|cm|mm|pt|pc|px|rem|em|%|ex|gd|vw|vh|vm|deg|grad|rad|ms|s|khz|hz","g")
+			}
+		},
+		
+		_regex:new RegExp("in|cm|mm|pt|pc|px|rem|em|%|ex|gd|vw|vh|vm|deg|grad|rad|ms|s|khz|hz","g")
 	};
 		
 
 	/*
-		TweenDOMelementsinterface
+		Package: ajsf.tweener.DOMInterface
+
+		These methods are automatically added to DOM elements selected using ajsf.
+
+		They mostly are helpers functions to setup quickly tweens on elements.
+
+		Example:
+		(start code)
+
+		<div id="myElement"></div>
+
+		<script type="text/javascript">
+
+			ajsf.load('aetween').ready(function(){
+
+				_('#myElement').fadeIn () ;
+				
+			});
+
+		</script>
+
+		(end)
 	*/
 	ajsf.registerInterface({
 		
-		/*
-			Variable:isTweening
-		*/
 		isTweening:false,
-		/*
-			Variable:_tweens
-			
-			Private
-		*/
+
 		_tweens:[],
 		
 		/*
-			Function:fadeOut
-			
+			Function: fadeOut
+
+			Fade out object
+
 			Parameters:
 				duration
 				destroyOnEnd
 			
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		fadeOut:function(duration,destroyOnEnd)
 		{
@@ -144,19 +169,25 @@
 			}else{
 				p.onMotionEnd=ajsf.delegate(this,'hide');
 			}
-			this.tween({opacity:1},{opacity:0},"regularEaseOut",d,p);
+			this.tween({
+				opacity:1
+			},{
+				opacity:0
+			},"regularEaseOut",d,p);
 			return this;
 		},
 		
 		/*
-			Function:mayFadeOut
-			
+			Function: mayFadeOut
+
+			Fade out object if object is currently visible
+
 			Parameters:
 				duration
 				destroyOnEnd
 			
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		mayFadeOut:function(duration,destroyOnEnd)
 		{
@@ -164,28 +195,38 @@
 			return this;
 		},
 		/*
-			Function:fadeIn
+			Function: fadeIn
+
+			Fade in object
 			
 			Parameters:
 				duration
 			
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		fadeIn:function(duration)
 		{
 			this.cancelTweens();
-			this.tween({opacity:0},{opacity:1},"regularEaseOut",duration||0.5,{onMotionEnd:null});
+			this.tween({
+				opacity:0
+			},{
+				opacity:1
+			},"regularEaseOut",duration||0.5,{
+				onMotionEnd:null
+			});
 			return this;
 		},
 		/*
-			Function:mayFadeIn
-			
+			Function: mayFadeIn
+
+			Fade in object if object is currently hidden
+
 			Parameters:
 				duration
 			
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		mayFadeIn:function(duration)
 		{
@@ -193,14 +234,16 @@
 			return this;
 		},
 		/*
-			Function:panFrom
+			Function: panFrom
+
+			Pan object from a specific position to its current position
 			
 			Parameters:
 				propsFrom
 				duration
 			
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		panFrom:function(propsFrom,duration)
 		{
@@ -208,14 +251,17 @@
 			return this;
 		},
 		/*
-			Function:panTo
-			
+			Function: panTo
+
+			Pan object from its current position to a specific position
+
 			Parameters:
 				propsTo
 				duration
 				destroyOnEnd
 			
 			Returns:
+			Current instance for chained commands on this element
 		*/
 		panTo:function(propTo,duration,destroyOnEnd)
 		{
@@ -229,7 +275,9 @@
 			return this.tweenTo(propTo,"regularEaseOut",duration,p);
 		},
 		/*
-			Function:tweenTo
+			Function: tweenTo
+
+			Tween object from its current properties to specific properties
 			
 			Parameters:
 				props
@@ -238,7 +286,7 @@
 				params
 			
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		tweenTo:function(props,easing,duration,params)
 		{
@@ -248,42 +296,22 @@
 			return this;
 		},
 		/*
-			Function:stop
-			
-			Returns:
-			Currentinstanceforchainedcommandsonthiselement
-		*/
-		stop:function()
-		{
-			ajsf.tweener.stopByTarget(this.style);
-			return this;
-		},
-		/*
-			Function:cancelTweens
-			
-			Returns:
-			Currentinstanceforchainedcommandsonthiselement
-		*/
-		cancelTweens:function()
-		{
-			ajsf.tweener.stopByTarget(this.style,true);
-			return this;
-		},
-		/*
-			Function:tweenFrom
+			Function: tweenFrom
+
+			Tween object from specific properties to its current properties
 			
 			Parameters:
 				props
 				easing
 				duration
 				params
-			
+
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		tweenFrom:function(props,easing,duration,params)
 		{
-			
+
 			var propsTo={},k;
 			for(k in props)
 			{
@@ -301,17 +329,19 @@
 			return this;
 		},
 		/*
-			Function:tween
-			
+			Function: tween
+
+			Manually setup tween
+
 			Parameters:
 				propsFrom
 				propsTo
 				easing
 				duration
 				params
-			
+
 			Returns:
-			Currentinstanceforchainedcommandsonthiselement
+			Current instance for chained commands on this element
 		*/
 		tween:function(propsFrom,propsTo,easing,duration,params)
 		{
@@ -329,6 +359,32 @@
 			ajsf.tweener.tween(this.style,propsTo,easing,duration,params);
 			return this;
 		},
+		/*
+			Function: stop
+
+			Stop all currently running tweens of this element
+			
+			Returns:
+			Current instance for chained commands on this element
+		*/
+		stop:function()
+		{
+			ajsf.tweener.stopByTarget(this.style);
+			return this;
+		},
+		/*
+			Function: cancelTweens
+
+			Resume all currently running tweens of this element
+			
+			Returns:
+			Current instance for chained commands on this element
+		*/
+		cancelTweens:function()
+		{
+			ajsf.tweener.stopByTarget(this.style,true);
+			return this;
+		},
 		
 		/*
 			Variable:_tweening
@@ -339,84 +395,41 @@
 	
 
 	/*
-		AJSFTweenClass
+		Class: ajsf.Tween
+
+		The actual tween class
 	*/
 	ajsf.Tween=ajsf.Class.extend({
 
-		/*
-			Variable:isPlaying
-		*/
 		isPlaying:false,
-		/*
-			Variable:_delegation
-			
-			Private
-		*/
+
 		_delegation:null,
-		/*
-			Variable:_obj
-			
-			Private
-		*/
+
 		_obj:{},
-		/*
-			Variable:_propsFrom
-			
-			Private
-		*/
+
 		_propsFrom:{},
-		/*
-			Variable:_props
-			
-			Private
-		*/
+
 		_props:{},
-		/*
-			Variable:_ease
-			
-			Private
-		*/
+
 		_ease:null,
-		/*
-			Variable:_time
-			
-			Private
-		*/
+
 		_time:0,
-		/*
-			Variable:_duration
-			
-			Private
-		*/
+
 		_duration:1000,
-		/*
-			Variable:_suffixes
-			
-			Private
-		*/
+
 		_suffixes:{},
-		/*
-			Variable:_dispatcher
-			
-			Private
-		*/
+
 		_dispatcher:null,
-		/*
-			Variable:_onMotionEnd
-			
-			Private
-		*/
+
 		_onMotionEnd:null,
-		/*
-			Variable:_delay
-			
-			Private
-		*/
+
 		_delay:0,
 		
 		/*
-			Constructor:construct
-			
+			Constructor: construct
+
+			Creates a new tween
+
 			Parameters:
 				obj
 				propsTo
@@ -426,11 +439,11 @@
 			
 			Returns:
 		*/
-		construct:function(obj,propsTo,easing,duration,parameters)
+		construct: function(obj,propsTo,easing,duration,parameters)
 		{
 			if(!obj)
 			{
-				returnfalse;
+				return;
 			}
 			
 			this._obj=obj;
@@ -494,16 +507,21 @@
 		},
 	
 		/*
-			Function:toString
-			
+			Function: toString
+
+			Get a string representation of a tween
+
 			Returns:
+			A string representation of the tween
 		*/
 		toString:function()
 		{
 			return "[Tween/target:"+this._obj+"/duration:"+this._duration+"/dispatcher:"+this._dispatcher+"]";
 		},
 		/*
-			Function:getTarget
+			Function: getTarget
+
+			Get target element of the tween
 			
 			Returns:
 		*/
@@ -511,16 +529,7 @@
 		{
 			return this._obj;
 		},
-		/*
-			Function:_filterProps
-			
-			Parameters:
-				props
-				
-			Private
-			
-			Returns:
-		*/
+		
 		_filterProps:function(props){
 			
 			var _props={},res=null,p,p2,l=0,k;
@@ -536,34 +545,36 @@
 					p=parseFloat(String(this._obj[k]).replace(ajsf.tweener._regex,""));
 					p2=parseFloat(String(props[k]).replace(ajsf.tweener._regex,""));
 		
-						this._propsFrom[k]=p;
-						_props[k]=p2;
+					this._propsFrom[k]=p;
+					_props[k]=p2;
 		
-						res=this._obj[k].match(ajsf.tweener._regex);
-						if(res!=null)
-						{
-							this._suffixes[k]=res[0];
-						}else{
-							this._suffixes[k]='';
-						}
+					res=this._obj[k].match(ajsf.tweener._regex);
+					if(res!=null)
+					{
+						this._suffixes[k]=res[0];
+					}else{
+						this._suffixes[k]='';
+					}
 						
-						l++;
+					l++;
 				}else{
 					
 					p=this._obj[k];
 					p2=props[k];
 			
-						this._suffixes[k]='';
-						this._propsFrom[k]=p;
-						_props[k]=p2;
-						l++;
+					this._suffixes[k]='';
+					this._propsFrom[k]=p;
+					_props[k]=p2;
+					l++;
 				}
 				
 			}
 			return _props;
 		},
 		/*
-			Function:resume
+			Function: resume
+
+			Resume the tween (go to end of tween)
 		*/
 		resume:function(){
 			if(this.isPlaying==true)
@@ -573,7 +584,9 @@
 			}
 		},
 		/*
-			Function:isFinished
+			Function: isFinished
+
+			Check if tween is finished
 			
 			Returns:
 		*/
@@ -582,7 +595,9 @@
 		},
 		
 		/*
-			Function:start
+			Function: start
+
+			Start the tween
 		*/
 		start:function(){
 			if(this.isPlaying==false)
@@ -602,7 +617,9 @@
 		},
 		
 		/*
-			Function:stop
+			Function: stop
+
+			Stop the tween
 		*/
 		stop:function(){
 			if(this.isPlaying==true){
@@ -613,11 +630,7 @@
 				ajsf.tweener.unregisterTween(this);
 			}
 		},
-		/*
-			Function:_update
-			
-			Private
-		*/
+
 		_update:function(){
 			this._time=(new Date()).getTime()-this._startTime;
 			if(this._time>=this._duration)
@@ -642,11 +655,7 @@
 				this._apply();
 			}
 		},
-		/*
-			Function:_apply
-			
-			Private
-		*/
+
 		_apply:function(){
 			var p,k;
 			for(k in this._props)
@@ -662,18 +671,9 @@
 				}
 			}
 		},
-		/*
-			Function:_setProperty
-			
-			Parameters:
-				propName
-				value
-				suffix
-			
-			Private
-		*/
+
 		_setProperty:function(p,value,suffix){
-			if(p!='opacity')
+			if(p!=='opacity')
 			{
 				this._obj[p]=value+''+suffix;
 			}else{
@@ -693,11 +693,13 @@
 	
 
 	/*
-		Tweenalgorythms
+		Package: ajsf.Tween.easing
+
+		
 	*/
 	
 	/*
-		Function:ajsf.Tween.backEaseIn
+		Function: ajsf.Tween.backEaseIn
 		
 		Parameters:
 			t
@@ -714,7 +716,7 @@
 		return c*(t/=d)*t*((s+1)*t-s)+b;
 	};
 	/*
-		Function:ajsf.Tween.backEaseOut
+		Function: ajsf.Tween.backEaseOut
 		
 		Parameters:
 			t
@@ -731,7 +733,7 @@
 		return c*((t=t/d-1)*t*((s+1)*t+s)+1)+b;
 	};
 	/*
-		Function:ajsf.Tween.backEaseInOut
+		Function: ajsf.Tween.backEaseInOut
 		
 		Parameters:
 			t
@@ -749,7 +751,7 @@
 		return c/2*((t-=2)*t*(((s*=(1.525))+1)*t+s)+2)+b;
 	};
 	/*
-		Function:ajsf.Tween.elasticEaseIn
+		Function: ajsf.Tween.elasticEaseIn
 		
 		Parameters:
 			t
@@ -762,20 +764,22 @@
 		Returns:
 	*/
 	ajsf.Tween.elasticEaseIn=function(t,b,c,d,a,p){
-			if(t==0)return b;
-			if((t/=d)==1)return b+c;
-			if(!p)p=d*.3;
-			if(!a||a<Math.abs(c)){
-				a=c;var s=p/4;
-			}
-			else{
-				var s=p/(2*Math.PI)*Math.asin(c/a);
-			}
-			return -(a*Math.pow(2,10*(t-=1))*Math.sin((t*d-s)*(2*Math.PI)/p))+b;
+		if(t==0)return b;
+		if((t/=d)==1)return b+c;
+		if(!p)p=d*.3;
+		var s;
+		if(!a||a<Math.abs(c)){
+			a=c;
+			s=p/4;
+		}
+		else{
+			s=p/(2*Math.PI)*Math.asin(c/a);
+		}
+		return -(a*Math.pow(2,10*(t-=1))*Math.sin((t*d-s)*(2*Math.PI)/p))+b;
 		
 	};
 	/*
-		Function:ajsf.Tween.elasticEaseOut
+		Function: ajsf.Tween.elasticEaseOut
 		
 		Parameters:
 			t
@@ -788,13 +792,19 @@
 		Returns:
 	*/
 	ajsf.Tween.elasticEaseOut=function(t,b,c,d,a,p){
-			if(t==0)return b;if((t/=d)==1)return b+c;if(!p)p=d*.3;
-			if(!a||a<Math.abs(c)){a=c;var s=p/4;}
-			else var s=p/(2*Math.PI)*Math.asin(c/a);
-			return (a*Math.pow(2,-10*t)*Math.sin((t*d-s)*(2*Math.PI)/p)+c+b);
+		if(t==0)return b;
+		if((t/=d)==1)return b+c;
+		if(!p)p=d*.3;
+		var s;
+		if(!a||a<Math.abs(c)){
+			a=c;
+			s=p/4;
+		}
+		else s=p/(2*Math.PI)*Math.asin(c/a);
+		return (a*Math.pow(2,-10*t)*Math.sin((t*d-s)*(2*Math.PI)/p)+c+b);
 	};
 	/*
-		Function:ajsf.Tween.elasticEaseInOut
+		Function: ajsf.Tween.elasticEaseInOut
 		
 		Parameters:
 			t
@@ -807,15 +817,21 @@
 		Returns:
 	*/
 	ajsf.Tween.elasticEaseInOut=function(t,b,c,d,a,p){
-		if(t==0)return b;if((t/=d/2)==2)return b+c;if(!p)p=d*(.3*1.5);
-		if(!a||a<Math.abs(c)){a=c;var s=p/4;}
-		else var s=p/(2*Math.PI)*Math.asin(c/a);
+		if(t==0)return b;
+		if((t/=d/2)==2)return b+c;
+		if(!p)p=d*(.3*1.5);
+		var s;
+		if(!a||a<Math.abs(c)){
+			a=c;
+			s=p/4;
+		}
+		else s=p/(2*Math.PI)*Math.asin(c/a);
 		if(t<1)return-.5*(a*Math.pow(2,10*(t-=1))*Math.sin((t*d-s)*(2*Math.PI)/p))+b;
 		return a*Math.pow(2,-10*(t-=1))*Math.sin((t*d-s)*(2*Math.PI)/p)*.5+c+b;
 	};
 	
 	/*
-		Function:ajsf.Tween.bounceEaseOut
+		Function: ajsf.Tween.bounceEaseOut
 		
 		Parameters:
 			t
@@ -837,7 +853,7 @@
 		}
 	};
 	/*
-		Function:ajsf.Tween.bounceEaseIn
+		Function: ajsf.Tween.bounceEaseIn
 		
 		Parameters:
 			t
@@ -851,7 +867,7 @@
 		return c-ajsf.Tween.bounceEaseOut(d-t,0,c,d)+b;
 	};
 	/*
-		Function:ajsf.Tween.bounceEaseInOut
+		Function: ajsf.Tween.bounceEaseInOut
 		
 		Parameters:
 			t
@@ -866,7 +882,7 @@
 		else return ajsf.Tween.bounceEaseOut(t*2-d,0,c,d)*.5+c*.5+b;
 	};
 	/*
-		Function:ajsf.Tween.strongEaseInOut
+		Function: ajsf.Tween.strongEaseInOut
 		
 		Parameters:
 			t
@@ -880,7 +896,7 @@
 		return c*(t/=d)*t*t*t*t+b;
 	};
 	/*
-		Function:ajsf.Tween.regularEaseIn
+		Function: ajsf.Tween.regularEaseIn
 		
 		Parameters:
 			t
@@ -894,7 +910,7 @@
 		return c*(t/=d)*t+b;
 	};
 	/*
-		Function:ajsf.Tween.regularEaseOut
+		Function: ajsf.Tween.regularEaseOut
 		
 		Parameters:
 			t
@@ -908,7 +924,7 @@
 		return -c*(t/=d)*(t-2)+b;
 	};
 	/*
-		Function:ajsf.Tween.regularEaseInOut
+		Function: ajsf.Tween.regularEaseInOut
 		
 		Parameters:
 			t
@@ -923,7 +939,7 @@
 		return -c/2*((--t)*(t-2)-1)+b;
 	};
 	/*
-		Function:ajsf.Tween.strongEaseIn
+		Function: ajsf.Tween.strongEaseIn
 		
 		Parameters:
 			t
@@ -937,7 +953,7 @@
 		return c*(t/=d)*t*t*t*t+b;
 	};
 	/*
-		Function:ajsf.Tween.strongEaseOut
+		Function: ajsf.Tween.strongEaseOut
 		
 		Parameters:
 			t
@@ -951,7 +967,7 @@
 		return c*((t=t/d-1)*t*t*t*t+1)+b;
 	};
 	/*
-		Function:ajsf.Tween.strongEaseInOut
+		Function: ajsf.Tween.strongEaseInOut
 		
 		Parameters:
 			t
