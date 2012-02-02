@@ -59,7 +59,7 @@
 	    Returns the slide container
 	
 	    Returns:
-	    [DOMInputElement] The slider container
+	    [DOMElement] The input element populated by the 
 	 
 	 */
 	getInput: function ()
