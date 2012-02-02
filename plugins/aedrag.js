@@ -12,7 +12,12 @@
 
 (function (){
 	
-	
+	/*
+	    Class: ajsf.Drag
+    
+	    Let drag objects
+	    
+	 */
 	ajsf.Drag = ajsf.Class.extend({
 		
 		construct: function ( e , t , l , w , h )
@@ -208,6 +213,12 @@
 		
 	});
 
+	/*
+	    Class: ajsf.DragDrop
+	    
+	    Let drag objects and drop them on drop zones
+	    
+	 */
 	ajsf.DragDrop = ajsf.Drag.extend({
 		construct: function ( e , t , l , w , h )
 		{

@@ -1636,9 +1636,7 @@
 		},
 
 		/*
-			Function: create
-
-			[DEPRECATED] You should use	<ajsf.element>, order of arguments is changed
+			Function: element
 
 			Creates a new element in the DOM
 
