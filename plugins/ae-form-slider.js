@@ -32,11 +32,16 @@
 	    
 	    this.cursors = options.cursors || 1 ;
 	    
-	    this.initial = option.initial || 0 ;
+	    this.initial = options.initial || 0 ;
 	    
 	    this._values = [] ;
 	    
 	    this.container = ajsf.element() ;
+	    
+	    this.container.stylize('background','#f00') ;
+	    
+	    this.container.html('&nbsp;');
+	    
 	},
 	
 	/*
@@ -79,6 +84,8 @@
 	    {
 		 this.input.hide () ;
 	    }
+	    
+	    this.input.insertAfter(this.container) ;
 	},
 	
 	_refresh: function (e)
