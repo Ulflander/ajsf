@@ -802,7 +802,7 @@
 			Adds a listener an the element
 			
 			Parameters:
-				action - [string] The action to listen
+				action - [string] The action to listen, or some multiple actions separated by a comma
 				callback - [function] Function to call when event is fired
 				
 			Returns:
@@ -811,6 +811,12 @@
 	    addListener: function (action, callback) {
 		if ( typeof(callback) !== "function" ) {
 		    throw "ajsf_extends_dom::addListener:: function " + callback + " is not a function";
+		}
+		if(action.indexOf(',') > -1)
+		{
+		    var actions = action.split(','), i = 0, l = actions.length ;
+		    for ( i ; i < l ; i ++ ) {this.addListener(actions[i].trim(), callback);} 
+		    return this ;
 		}
 		if(this.attachEvent){
 		    this.attachEvent('on'+action,callback);

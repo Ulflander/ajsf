@@ -127,10 +127,10 @@
 			if ( this._dragging == false && this._activated == true )
 			{
 				this._dragging = true ;
-				//ajsf.timer.registerEnterFrame(this._delegation);
+				ajsf.timer.registerEnterFrame(this._delegation);
 				ajsf.prevent(e);
 				
-				_d.addListener('mousemove',this._delegation);
+				//_d.addListener('mousemove',this._delegation);
 				
 				this._e.dispatch('dragstart') ;
 				
@@ -144,8 +144,8 @@
 		{
 			if ( this._dragging == true )
 			{
-				//ajsf.timer.unregisterEnterFrame(this._delegation);
-				_d.remListener('mousemove',this._delegation);
+				ajsf.timer.unregisterEnterFrame(this._delegation);
+				//_d.remListener('mousemove',this._delegation);
 				if (  this._activated == true )
 				{
 					this._e.dispatch('dragend') ;
