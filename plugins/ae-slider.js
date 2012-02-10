@@ -15,7 +15,7 @@
 	
     if ( !window.ajsf ) return;
     
-    ajsf.load('ae-transitions') ;
+    ajsf.load('aetween','ae-transitions') ;
     
 	
     /*
@@ -95,6 +95,8 @@
 	{
 	    this._container = _(container) ;
 	    
+	    container.stylize('position', 'relative') ;
+	    
 	    this.reset () ;
 	},
 	
@@ -104,6 +106,18 @@
 	    this._els = this._container.childs () ;
 	    
 	    this._length = this._els.length ;
+	    
+	    for ( var i = 0 ; i < this._length ; i ++ )
+	    {
+		this._els[i].stylize ('display','block') ;
+		this._els[i].stylize ('position','absolute') ;
+		
+		if ( i > 0 )
+		{
+		    this._els[i].hide () ;
+		}
+	    }
+	    
 	    
 	    // Current page
 	    this._current = -1 ;
@@ -166,6 +180,7 @@
 	    if ( prev )
 	    {
 		var t = new ajsf.Transition ( 'HSlide' , prev , next, delta ) ;
+		
 	    } else {
 	       next.show () ;
 	    }

@@ -10,21 +10,18 @@
 	width: '200px',
 	height: '40px',
 	display: 'inline-block',
-	position: 'relative',
-	margin: '0 10px'
+	position: 'relative'
     } ;
     
     ajsf.forms.styles.VInputSlider = {
 	width: '40px',
 	height: '200px',
 	display: 'inline-block',
-	position: 'relative',
-	margin: '10px 0'
+	position: 'relative'
     } ;
     
     ajsf.forms.styles.HInputSliderHr = {
 	height: '1px',
-	background: '#ddd',
 	position: 'absolute',
 	left: 0,
 	right: 0
@@ -34,9 +31,6 @@
 	width: '1px',
 	height: '100%',
 	top: 0,
-	paddingTop: 0,
-	marginTop: 0,
-	background: '#ddd',
 	position: 'absolute',
 	left: '10px'
     } ;
@@ -44,7 +38,6 @@
     ajsf.forms.styles.Cursor = {
 	height: '20px',
 	width: '20px',
-	background: '#aaa',
 	cursor: 'pointer',
 	position: 'absolute'
     } ;
@@ -52,21 +45,18 @@
     ajsf.forms.styles.Gap = {
 	height: '10px',
 	width: '10px',
-	background: '#aaf',
 	position: 'absolute'
     } ;
     
     ajsf.forms.styles.HSliderLabel = {
 	position: 'absolute',
-	fontSize: '0.8em',
-	background: 'transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAKCAIAAAD6sKMdAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABRJREFUeNpiePfuHRMDAwMhDBBgAGuMAt0J4LruAAAAAElFTkSuQmCC) no-repeat center 5px'
+	fontSize: '0.8em'
     } ; 
     
     
     ajsf.forms.styles.VSliderLabel = {
 	position: 'absolute',
-	fontSize: '0.8em',
-	background: 'transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAABCAIAAABol6gpAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABFJREFUeNpifPfuHQNuABBgAFEgAszhqqD2AAAAAElFTkSuQmCC) no-repeat 5px center '
+	fontSize: '0.8em'
     } ;
     
     ajsf.load('aedrag') ;
@@ -123,6 +113,8 @@
 	    this.mode = options.mode || ajsf.forms.InputSlider.VALUE ;
 	    
 	    this.invert = options.invert === true ? true : false ;
+	    
+	    this.styles = options.styles === false ? false : true ;
 	    
 	    this.w = this.vertical ? 'h' : 'w' ;
 	    this.x = this.vertical ? 'getTop' : 'getLeft' ;
@@ -248,13 +240,16 @@
 	    
 	    this.hr = ajsf.element('hr') ;
 	    
-	    if ( !this.vertical )
+	    if ( this.styles )
 	    {
-		this.container.stylize(ajsf.forms.styles.HInputSlider) ;
-		this.hr.stylize ( ajsf.forms.styles.HInputSliderHr) ;
-	    } else {
-		this.container.stylize(ajsf.forms.styles.VInputSlider) ;
-		this.hr.stylize ( ajsf.forms.styles.VInputSliderHr) ;
+		if ( !this.vertical )
+		{
+		    this.container.stylize(ajsf.forms.styles.HInputSlider) ;
+		    this.hr.stylize ( ajsf.forms.styles.HInputSliderHr) ;
+		} else {
+		    this.container.stylize(ajsf.forms.styles.VInputSlider) ;
+		    this.hr.stylize ( ajsf.forms.styles.VInputSliderHr) ;
+		}
 	    }
 	    
 	    this.container.append(this.hr);
@@ -269,7 +264,10 @@
 	    
 	    if ( this.mode == ajsf.forms.InputSlider.GAP )
 	    {
-		this.gap = ajsf.element ('div', 'slider-gap').stylize(ajsf.forms.styles.Gap ) ;
+		if ( this.styles )
+		{
+		    this.gap = ajsf.element ('div', 'slider-gap').stylize(ajsf.forms.styles.Gap ) ;
+		}
 		
 		this.container.append ( this.gap ) ;
 	    }
@@ -280,10 +278,10 @@
 	    // Create main labels 
 	    this.labels = {
 		start: ajsf.element('span', 'slider-label first-label')
-		.stylize(labelStyles)
+		.stylize( this.styles ? labelStyles : {} )
 		.html(this.labelcb(this.invert?this.max:this.min)) ,
 		end: ajsf.element('span', 'slider-label last-label')
-		.stylize(labelStyles)
+		.stylize( this.styles ? labelStyles : {} )
 		.html(this.labelcb(this.invert?this.min:this.max)) 
 	    } ;
 	    
@@ -291,33 +289,6 @@
 	    
 	    this.container.append(this.labels.start);
 	    
-	    // Position of labels
-	    if ( !this.vertical )
-	    {
-		this.labels.start.stylize({
-		    left: 0,
-		    paddingTop: '25px',
-		    backgroundPosition: 'left 5px'
-		});
-		this.labels.end.stylize({
-		    right: '-10px',
-		    paddingTop: '25px',
-		    marginLeft: '10px',
-		    backgroundPosition: '10px 5px'
-		});
-	    } else {
-		this.labels.start.stylize({
-		    top: 0,
-		    paddingLeft: '25px',
-		    marginTop: '-10px',
-		    backgroundPosition: '5px 10px'
-		});
-		this.labels.end.stylize({
-		    bottom: '-10px',
-		    paddingLeft: '25px',
-		    backgroundPosition: '5px 5px'
-		});
-	    }
 	    
 	    // Create steps labels
 	    for ( i ; i < this.steps ; i ++ )
@@ -325,7 +296,7 @@
 		val = this.max / this.steps * (this.invert ? this.steps - i : i) ;
 		
 		label = ajsf.element('span', 'slider-label')
-		.stylize( labelStyles )
+		.stylize( this.styles ? labelStyles : {} )
 		.html( this.labelcb(val.toFixed(this.decimals)) ) ;
 		
 		this.container.append ( label ) ;
@@ -333,13 +304,11 @@
 		if ( !this.vertical )
 		{
 		    label.stylize({
-			left: ((this.size / (this.steps) * i) - label[this.w]()/2) + 'px',
-			paddingTop: '25px'
+			left: ((this.size / (this.steps) * i) - label[this.w]()/2) + 'px'
 		    });
 		} else {
 		    label.stylize({
-			top: ((this.size / (this.steps) * i) - label[this.w]()/2) + 'px',
-			paddingLeft: '25px'
+			top: ((this.size / (this.steps) * i) - label[this.w]()/2) + 'px'
 		    });
 		}
 		
@@ -347,9 +316,13 @@
 	    
 	    this.container.append (this.labels.end);
 	    
-	    this.cursor = ajsf.element ( 'div' ) ;
-		
-	    this.cursor.stylize ( ajsf.forms.styles.Cursor ) ;
+	    this.cursor = ajsf.element ( 'div' , 'slider-button' ) ;
+	
+	    if ( this.styles )
+	    {
+		this.cursor.stylize ( ajsf.forms.styles.Cursor ) ;
+	    }
+	    
 		
 	    this.container.append ( this.cursor ) ;
 		
@@ -365,19 +338,20 @@
 	    if ( this.mode == ajsf.forms.InputSlider.GAP )
 	    {
 		
-		this.gapCursor = ajsf.element ( 'div' ) ;
+		this.gapCursor = ajsf.element ( 'div' , 'slider-button gap' ) ;
 
-		this.gapCursor.stylize ( ajsf.forms.styles.Cursor ) ;
-		this.gapCursor.stylize('background', '#f00');
+		if ( this.styles )
+		{
+		    this.gapCursor.stylize ( ajsf.forms.styles.Cursor ) ;
+		}
+		
 		this.container.append ( this.gapCursor ) ;
 
 		if ( !this.vertical )
 		{
 		    this.gapCursorDragger = new ajsf.Drag ( this.gapCursor ) ;
-		    this.gap.setTop(5);
 		} else {
 		    this.gapCursorDragger = new ajsf.Drag ( this.gapCursor ) ;
-		    this.gap.setLeft(5);
 		}
 
 		this.gapCursor.on('drag, dragend', ajsf.delegate ( this, '_refresh') ) ;
@@ -433,6 +407,11 @@
 		
 		this.input.value = this.invert ? this.max - val : val ;
 		
+		if ( this.inited === true && old !== this.input.value)
+		{
+		    this.dispatch('change');
+		}
+		
 		return;
 	    }
 	    
@@ -446,7 +425,7 @@
 	    } else {
 		this.input.value = val + ',' + val2 ;
 	    }
-	
+	    
 	    if ( this.inited === true && old !== this.input.value)
 	    {
 		this.dispatch('change');

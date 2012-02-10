@@ -15,11 +15,10 @@
 
 (function (){
 
+if ( !ajsf.forms ) ajsf.forms = {} ;
 	
-ajsf.forms = {
 	
-		
-	selectAllRange: function (input)
+ajsf.forms.selectAllRange = function (input)
 	{
 		if ( !input.createTextRange ) return ;
 		
@@ -28,9 +27,7 @@ ajsf.forms = {
 		range.moveStart('character', 0);
 		range.moveEnd('character', input.value.length );
 		range.select(); 
-	}
-		
-} ;
+	} ;
 
 ajsf.forms.PasswordConfirm = ajsf.Class.extend({
 	
