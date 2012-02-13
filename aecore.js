@@ -1,7 +1,7 @@
  
 /*
 	AJSF - Aenoa Javascript Framework
-	(c) Xavier Laumonier 2010-2011
+	(c) Xavier Laumonier 2010-2012
 	
 	This file contains the main parts of Aenoa Javascript Framework
 	
