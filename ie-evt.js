@@ -20,10 +20,10 @@
 		r = ajsf.EXTENDS_DOM.remListener ,
 		evts =[ 'abort','activate','afterprint','afterupdate','beforeactivate','beforecopy','beforecut','beforedeactivate','beforeeditfocus','beforepaste','beforeprint','beforeunload',
 		              'beforeupdate','blur','bounce','canplay','canplaythrough','cellchange','change','click','contextmenu','controlselect','copy','cut','dataavailable','datasetchanged',
-		              'datasetcomplete','dblclick','deactivate','drag','dragend','dragenter','dragleave','dragover','dragstart','drop','durationchange','emptied','ended','error','errorupdate',
+		              'datasetcomplete','dblclick','deactivate',/*'drag','dragend','dragenter','dragleave','dragover','dragstart','drop'*/,'durationchange','emptied','ended','error','errorupdate',
 		              'filterchange','finish','focus','focusin','focusout','hashchange','help','input','keydown','keypress','keyup','layoutcomplete','load','loadeddata','loadedmetadata',
 		              'loadstart','losecapture','message','mousedown','mouseenter','mouseleave','mousemove','mouseout','mouseover','mouseup','mousewheel','move','moveend','movestart',
-		              'mssitemodejumplistitemremoved','msthumbnailclick','offline','online','page','paste','pause','play','playing','progress','progress','propertychange','ratechange',
+		              'mssitemodejumplistitemremoved','msthumbnailclick','offline','online','paste','pause','play','playing','progress','progress','propertychange','ratechange',
 		              'readystatechange','readystatechange','reset','resize','resizeend','resizestart','rowenter','rowexit','rowsdelete','rowsinserted','scroll','seeked','seeking','select',
 		              'selectionchange','selectstart','stalled','start','stop','storage','storagecommit','submit','suspend','timeout','timeupdate','unload','volumechange','waiting' ];
 

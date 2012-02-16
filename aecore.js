@@ -134,7 +134,7 @@
 		
 	return {
 	    IE: /*@cc_on!@*/false,
-	    IE9: _w.msPerformance !== undefined,
+	    IE9: (function(){var a;try{var b=arguments.caller.length;a=0;}catch(e){a=1;}return ((document.all&&a)==1)}()),
 	    Opera: typeof(_w.opera)==='object',
 	    WebKit: ua.indexOf('AppleWebKit/') > -1,
 	    Gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') === -1,
@@ -146,7 +146,6 @@
 	    iPhone: i || f,
 	    iPad: ip || f,
 	    tablet: ip || f
-			
 	};
     }()) ) ),
 	
@@ -172,7 +171,7 @@
 	
 
 	
-    var ajsf = {
+    var _ajsf = {
 	/*
 
 		Package: ajsf.EXTENDS_DOM
@@ -1322,14 +1321,7 @@
 			
 			Returns:
 		*/
-	URL: (function(){
-	    var script = _d.getElementById('js-aecore') ;
-	    if ( script && script.hasAttribute('data-base-url'))
-	    {
-		return script.getAttribute('data-base-url') ;
-	    }
-	    return _d.location.href.split('#')[0];
-	} () ),
+	URL: null,
 		
 	/*
 			Variable: ROOT
@@ -1813,7 +1805,20 @@
 	    if ( this._lc === true || this._lw > 0 ) {
 		return false;
 	    }
-			
+	    
+	    if ( this._lc === false )
+	    {
+		    ajsf.mouse.initialize () ;
+		    ajsf.timer.initialize () ;
+		    ajsf.URL=(function(){
+			var script = _d.getElementById('js-aecore') ;
+			if ( script && script.hasAttribute('data-base-url'))
+			{
+			    return script.getAttribute('data-base-url') ;
+			}
+			return _d.location.href.split('#')[0];
+		    } () );
+	    }
 	    this._lc = true ;
 			
 	    var a=0, lf = this._lf , b = lf.length ;
@@ -1915,8 +1920,7 @@
 	{
 	    if (e && e.preventDefault) {
 		e.preventDefault();
-	    } else if(window.event)
-{
+	    } else if(window.event){
 		window.event.returnValue = false;
 	    }
 	},
@@ -3246,6 +3250,11 @@
     } ;
 
 	
+    if ( !window.ajsf )
+    {
+	glob('ajsf',_ajsf) ;
+    }
+	
     /*
 	 	Function: _
 	 	
@@ -3639,7 +3648,6 @@
 	};
     })();
 	
-	
     /*
 		AJSF AbstractEvtDispatcher Class
 		To do so , this method construct a dummy container that dispatch and receive events.
@@ -3917,20 +3925,7 @@
     glob('$', glob('ajsf', ajsf) ) ;
 	
 
-    /*
-		Init mouse
-		
-		Private
-	*/
-    ajsf.mouse.initialize () ;
 
-    /*
-		Init timer
-		
-		Private
-	*/
-    ajsf.timer.initialize () ;
-	
 	
 })();
 

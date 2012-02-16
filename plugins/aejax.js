@@ -13,7 +13,12 @@
  * 
  */
 (function (){
-	
+
+    if ( !ajsf )
+    {
+	ajsf = {} ;
+    }
+
     /**
 	 * Requires JSON plugin to decode server responses
 	 */
@@ -44,7 +49,7 @@
 		 * @return Current instance for chained commands on this element
 		 */
 	update: function ( URL, parameters , append , post , aenoa , dispatchGlobal ) {
-
+	    
 	    ajsf.aejax.setLastUpdateContainer ( this ) ;
 
 	    ajsf.aejax.setLastUpdateURL ( URL ) ;
@@ -154,6 +159,8 @@
 		
 	construct: function ( gatewayURL )
 	{
+	    
+	    
 	    this.aenoaMode = true ;
 			
 	    this.postMode = false ;
@@ -173,7 +180,7 @@
 			 * @private
 			 */
 	    this._js = null ;
-			
+	    
 	    this._gateway = gatewayURL ;
 			
 	    this._service = null ;
@@ -214,10 +221,12 @@
 	    {
 		this.xhr.open("GET",(parameters == '' ? this._gateway : this._gateway + "?" + parameters), true );
 		this.xhr.onreadystatechange = ajsf.delegate(this,"_onChange") ;
+		
 		if(this.sendAenoaHeaders)
 		{
 		    this.srh("Aenoa-Ajax-Connection", "true");
 		}
+		
 		this._addAejaxHeaders () ;
 				
 		if ( !b.Chrome )
@@ -358,9 +367,14 @@
 			
 	if(ajsf.isIE) {
 	    try {
-		this.xhr = new ActiveXObject("Msxml2.XMLHTTP");
-	    } catch (e) {
-		this.xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		this.xhr = new ActiveXObject("Msxml2.XMLHTTP.4.0");
+	    }
+	    catch(e){
+		try {
+		    this.xhr = new ActiveXObject("Msxml2.XMLHTTP");
+		} catch (e) {
+		    this.xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		}
 	    }
 	} else {
 	    this.xhr = new XMLHttpRequest();
