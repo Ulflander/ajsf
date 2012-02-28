@@ -119,6 +119,13 @@
 				{
 					this.current.destroy () ;
 				}
+				
+				if ( !data )
+				{
+				    this.current = new ajsf.popup.Dialog (":(",":(","x") ;
+				    popup.getContainer().html( ":(" ) ;
+				    return;
+				}
 			    
 				var popup = new ajsf.popup.InnerPopup (this.element) ;
 				
@@ -331,9 +338,14 @@
 			this.dispatch('destroy');
 
 			_u('body').stylize('overflow', this._oldBodyOverflow) ;
-
-			this._wrapper.destroy () ;
-			this._container.destroy () ;
+			if(this._wrapper)
+			{
+			    this._wrapper.destroy () ;
+			}
+			if(this._container)
+			{
+			    this._container.destroy () ;
+			}
 			this._wrapper = null ;
 			this._container = null ;
 			this._title = null ;
