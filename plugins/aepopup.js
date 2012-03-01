@@ -516,7 +516,7 @@
 	ajsf.popup.InnerPopup = ajsf.Class.extend({
 
 		
-		construct: function(element)
+		construct: function(element,wrapper)
 		{
 
 			if ( !ajsf.popup.instance )
@@ -525,6 +525,10 @@
 			}
 			
 			this.element = element ;
+			if ( wrapper )
+			{
+			    this.wrapper = wrapper ;
+			}
 			this._create () ;
 			this.refresh () ;
 		},
@@ -538,13 +542,21 @@
 			if ( this._container )
 				return this._container ;
 
-			var p = this._container = ajsf.create(null,null,'data-popup no-list-style');
-			p.setAttribute ( "style" , ajsf.popup.Dialog.styles.dialog ) ;
+			var p = this._container = ajsf.element('div','data-popup no-list-style');
 			
-			this._arrow = ajsf.create(null,'div','data-popup-arrow');
+			this._arrow = ajsf.element('div','data-popup-arrow');
 			
-			_d.body.appendChild(this._container) ;
-			_d.body.appendChild(this._arrow) ;
+			if ( this.wrapper )
+			{
+			    this.wrapper.appendChild(this._container) ;
+			    this.wrapper.appendChild(this._arrow) ;
+			    this.wrapper.stylize('position','absolute') ;
+			} else {
+			    ajsf.ROOT.appendChild(this._container);
+			    ajsf.ROOT.appendChild(this._arrow);
+			}
+			
+			
 			
 			ajsf.addScrollCB('detail', ajsf.delegate(this,'refresh') );
 			_(window).on ('resize', ajsf.delegate(this,'refresh')) ;
@@ -584,13 +596,15 @@
 			
 			if ( this._arrow )
 				this._arrow.destroy () ;
+			    
+			if ( this.wrapper ) {
+			    this.wrapper.destroy () ;
+			}
 			
 			this._container = null ;
 			this._arrow = null ;
 			this.title = null ;
 			this.element = null ;
-			this._destroying = false ;
-			this._appearing = true ;
 		},
 		
 		refresh: function ()
@@ -611,28 +625,36 @@
 				return;
 			}
 			
-			
-			al = oL + oW ;
-			at = oT ;
-			
-			l = oL + oW + a.w () ;
-			t = oT-50 ;
-			
-			c.setLeft(l);
-			c.setTop(t);
-			a.setLeft(al);
-			a.remClass('arr-right').addClass('arr-left');
-			a.setTop(at);
-			if ( this._appearing == true )
+			if ( !this.wrapper )
 			{
-				this._appearing = false ;
+			    al = oL + oW ;
+			    at = oT ;
+
+			    l = oL + oW + a.w () ;
+			    t = oT-50 ;
+
+			    c.setLeft(l);
+			    c.setTop(t);
+			    a.setLeft(al);
+			    a.remClass('arr-right').addClass('arr-left');
+			    a.setTop(at);
+
+			} else {
+			    this.wrapper.setTop(oT);
+			    if ( oL+oW > ajsf.viewport.getWidth() / 2 )
+			    {
+				this.wrapper.setLeft(oL-parseInt(this.wrapper.getStyle('width')));
+				this.wrapper.remClass('right-side').addClass('left-side');
+			    } else {
+				this.wrapper.remClass('left-side').addClass('right-side');
+				this.wrapper.setLeft(oL+oW);
+			    }
 			}
+			
 		},
 		
 		
 		_arrow: null,
-		_container: null,
-		_destroying: false,
-		_appearing: true
+		_container: null
 	});
 })() ;
