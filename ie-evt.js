@@ -15,6 +15,11 @@
 (function (){
 	
 	
+	if ( IEVersion >= 9 )
+	{
+	    return;
+	}
+	
 	var d = ajsf.EXTENDS_DOM.dispatch ,
 		a = ajsf.EXTENDS_DOM.addListener,
 		r = ajsf.EXTENDS_DOM.remListener ,
@@ -117,7 +122,7 @@
 
 			if ( evts.indexOf(action) > -1 ) 
 			{
-				d.apply( this,  [action , bubbles , cancellable] ) ;
+				r.apply( this,  [action , bubbles , cancellable] ) ;
 				return this ;
 			}
 			

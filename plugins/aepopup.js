@@ -529,8 +529,14 @@
 			{
 			    this.wrapper = wrapper ;
 			}
+			this.topGap = 0 ;
 			this._create () ;
 			this.refresh () ;
+		},
+		
+		setTopGap: function ( pix )
+		{
+		    this.topGap = pix ;
 		},
 		
 		/**
@@ -634,14 +640,15 @@
 			    t = oT-50 ;
 
 			    c.setLeft(l);
-			    c.setTop(t);
+			    c.setTop(t+this.topGap);
 			    a.setLeft(al);
 			    a.remClass('arr-right').addClass('arr-left');
-			    a.setTop(at);
+			    a.setTop(at+ this.topGap);
 
 			} else {
-			    this.wrapper.setTop(oT);
-			    if ( oL+oW > ajsf.viewport.getWidth() / 2 )
+			    this.wrapper.setTop(oT + this.topGap);
+			    
+			    if ( oL+oW > ajsf.viewport.getWidth() / 2 + 200 )
 			    {
 				this.wrapper.setLeft(oL-parseInt(this.wrapper.getStyle('width')));
 				this.wrapper.remClass('right-side').addClass('left-side');
