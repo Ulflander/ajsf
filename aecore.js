@@ -1842,13 +1842,13 @@
 	    this._lc = true ;
 			
 	    var a=0, lf = this._lf , b = lf.length ;
-			
+		  this._lf = [];	
 	    for ( a;a<b;a++ )
 	    {
 		lf[a] () ;
 	    }
 
-	    this._lf = [];
+	  
 			
 	    return true ;
 	},
