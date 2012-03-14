@@ -2078,7 +2078,7 @@
 		    {
 			l = s.split('>');
 			// Spit the query and rerun ajsf.get
-			els = this.get(l[1], this.get(l[0],context), ignoreCache,true) ;
+			els = this.get(l[1].trim(), this.get(l[0].trim(),context), ignoreCache,true) ;
 			for( k in els )
 			{
 			    // No need here to apply interfaces: interfaces has been applied yet

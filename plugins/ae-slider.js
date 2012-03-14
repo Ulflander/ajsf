@@ -127,6 +127,12 @@
 	
 	next: function ()
 	{
+	    if (  this._current + 1 > this._length )
+	    {
+		this.page(0) ;
+		return;
+	    }
+	    
 	    this.page ( this._current + 1 ) ;
 	},
 	
