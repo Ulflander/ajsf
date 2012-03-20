@@ -428,7 +428,7 @@
 				case '=':
 					val = this.get(s2, data);
 					
-					return (val ? (val.trim ? val.trim() : val ) : this.undefined_ ) ;
+					return (val !== undefined && val != null ? (val.trim ? val.trim() : val ) : this.undefined_ ) ;
 				// This is a condition
 				case '!':
 					var i = s2.indexOf( '%>' ),
