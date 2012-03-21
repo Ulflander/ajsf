@@ -1268,14 +1268,14 @@
 					if( this.__$hov == true && ajsf.mouse.isOutside(this) ) {
 						this.__$hov = false ;
 						ajsf.delegate(self,func2)() ;
-						_w.remListener('mousemove', func);
+						_(window).remListener('mousemove', func);
 					}
 				}) ;
 				
 				this.on('mouseover', ajsf.delegate(this,function (ev) {
 
 					if ( this.__$hov !== true ) {
-						_w.on('mousemove', func);
+						_(window).on('mousemove', func);
 						this.__$hov = true ;
 						ajsf.delegate(self,func1)();
 					}
