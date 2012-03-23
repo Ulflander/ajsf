@@ -2289,8 +2289,7 @@
 			Returns:
 			[object] A reference to the object
      */
-		extend: function(o)
-		{
+		extend: function(o) {
 			if ( !o )
 			{
 				o = {};
@@ -2314,8 +2313,7 @@
 			return o;
 		},
 	
-		extendAll: function (a)
-		{
+		extendAll: function (a) {
 			if ( !a || !a.length )
 			{
 				return a;
@@ -3181,6 +3179,8 @@
 					y
 					
 	 */
+			__e: null,
+			
 			update: function ( x , y )
 			{
 				this.mouseX = x ;
@@ -3192,12 +3192,14 @@
 	 */
 			initialize: function ()
 			{
+			    var self = this ;
 				_d.addListener ( 'mousemove' , function (e) {
-					if ( ajsf.isIE ) {
-						ajsf.mouse.update(e.clientX + document.body.scrollLeft, e.clientY + document.body.scrollTop) ;
-					} else {
-						ajsf.mouse.update(e.pageX , e.pageY) ;
-					}
+				    self.__e = e ;
+				    if ( ajsf.isIE ) {
+					    ajsf.mouse.update(e.clientX + document.body.scrollLeft, e.clientY + document.body.scrollTop) ;
+				    } else {
+					    ajsf.mouse.update(e.pageX , e.pageY) ;
+				    }
 				}) ;
 			},
 			/*
@@ -3225,6 +3227,34 @@
 	 */
 			isOutside: function (obj) {
 				return !this.isInside(obj);
+			},
+			
+			getViewportX: function (  )
+			{
+			    if (!this.__e )
+			    {
+				return 0 ;
+			    }
+			    
+			    if ( ajsf.isIE ) {
+				return this.__e.clientX ;
+			    }
+			    
+			    return this.__e.clientX - document.body.scrollLeft ;
+			},
+			
+			getViewportY: function (  )
+			{
+			    if (!this.__e )
+			    {
+				return 0 ;
+			    }
+			    
+			    if ( ajsf.isIE ) {
+				return this.__e.clientY ;
+			    }
+			    
+			    return this.__e.clientY - document.body.scrollTop ;
 			}
 			
 		},
