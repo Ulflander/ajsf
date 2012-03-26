@@ -112,8 +112,8 @@
 	{
 	    this.__aejax = new Aejax ( URL ) ;
 	    this.__aejax.postMode = false ;
-	    this.__aejax.aenoaMode = false ;
-	    this.__aejax.sendAenoaHeaders = false ;
+	    this.__aejax.aenoaMode = true ;
+	    this.__aejax.sendAenoaHeaders = true ;
 			
 	    this.__aejax.onEnd = ajsf.delegate(this , function () {
 		var s = this.__aejax.getStringResponse () ;
@@ -126,6 +126,12 @@
 			    eval(e.innerHTML);
 			});
 		    } catch(e) {};
+		}
+			
+				
+		if ( this.onUpdate )
+		{
+		    this.onUpdate ( this , s ) ;
 		}
 				
 		this.dispatch('ajaxUpdate') ;
@@ -202,6 +208,7 @@
 	connect: function ()
 	{
 	    this._aexhr () ;
+	    
 			
 	    var parameters = "" ;
 			

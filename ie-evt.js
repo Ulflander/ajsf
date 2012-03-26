@@ -15,11 +15,6 @@
 (function (){
 	
 	
-	if ( IEVersion >= 9 )
-	{
-	    return;
-	}
-	
 	var d = ajsf.EXTENDS_DOM.dispatch ,
 		a = ajsf.EXTENDS_DOM.addListener,
 		r = ajsf.EXTENDS_DOM.remListener ,
@@ -36,7 +31,7 @@
 		
 	ajsf.EXTENDS_DOM.listeners___ = [] ;
 		
-
+		
 		/*
 			Function: addListener
 			
@@ -62,11 +57,28 @@
 				return this ;
 			}
 			
-			if (!this.listeners___[action])
-				this.listeners___[action] = [] ;
+			if (!this[action+"__evt"]) {
+			    this[action+"__evt"] = 0;
+			}
 			
-			this.listeners___[action].push(callback);
+			if ( !this.listeners___[action] )
+			{
+			    this.listeners___[action] = [] ;
+			}
 			
+			this.listeners___[action].push(callback) ;
+			
+			var self = this ;
+			
+			this.attachEvent("onpropertychange", function(event){
+			    if (event.propertyName == action+"__evt") {
+				if ( self.listeners___[action].indexOf(callback) > -1 )
+				{
+				    callback({});
+				}
+			    }
+			});
+
 			return this;
 		} ;
 		
@@ -88,22 +100,13 @@
 				return this ;
 			}
 			
-			if (!this.listeners___[action])
-				return true ;
 			
-			var o = {
-					prevented: false
-			} ;
 			
-			for ( k in this.listeners___ )
-			{
-				if ( is(this.listeners___[k],'function' ) )
-				{
-					this.listeners___[k] ( o ) ;
-				}
+			if (this[action+"__evt"]>=0) {
+			    this[action+"__evt"]++;
 			}
 			
-			return !o.prevented ;
+			return false ;
 		};
 		/*
 			Function: remListener
@@ -122,20 +125,13 @@
 
 			if ( evts.indexOf(action) > -1 ) 
 			{
-				r.apply( this,  [action , bubbles , cancellable] ) ;
+				r.apply( this,  [action , callback] ) ;
 				return this ;
 			}
 			
-			if (!this.listeners___[action])
-				this.listeners___[action] = [] ;
-			
-
-			for ( k in this.listeners___ )
+			if ( this.listeners___[action] && this.listeners___[action].indexOf(callback) > -1 )
 			{
-				if ( is(this.listeners___[k],'function' ) )
-				{
-					this.listeners___[k] = null ;
-				}
+			    this.listeners___[action][this.listeners___[action].indexOf(callback)] = null ;
 			}
 			
 			return this;
