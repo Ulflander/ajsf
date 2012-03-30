@@ -1042,6 +1042,10 @@
 		while( o !== null && o !== parent ) {
 		    r += o.offsetLeft;
 					
+		    if (o != _d.body && o != _d.documentElement) {
+			r -= o.scrollLeft ;
+		    }
+					
 		    if ( abs === false )
 		    {
 			break;
@@ -1051,6 +1055,7 @@
 					
 		    while ( o2 && o2.parentNode!=o.offsetParent) {
 			o2 = o2.parentNode;
+			r -= o2.scrollLeft || 0 ;
 		    }
 					
 		    o = o.offsetParent;
@@ -1069,10 +1074,15 @@
 	    getTop: function ( abs , parent )
 	    {
 		var r = 0, o = this, o2;
+		
 		while( o !== null && o !== parent ) {
 					
 		    r += o.offsetTop;
 		    
+		    if (o != ajsf.ROOT ) {
+			r += o.scrollTop ;
+		    }
+					
 		    if ( abs === false )
 		    {
 			break;
@@ -1082,6 +1092,7 @@
 					
 		    while ( o2 && o2.parentNode!=o.offsetParent) {
 			o2 = o2.parentNode;
+			r += o2.scrollTop || 0 ;
 		    }
 					
 		    o = o.offsetParent;
@@ -1943,12 +1954,18 @@
 				e
      */
 	prevent: function (e)
-	{
-	    if (e && e.preventDefault) {
+	{  
+	    if (!e) e = window.event;
+	    
+	    if (e.preventDefault) {
 		e.preventDefault();
-	    } else if(window.event){
-		window.event.returnValue = false;
+	    } else {
+		e.returnValue = false;
 	    }
+	    
+	    e.cancelBubble = true;
+	    e.cancel=true;
+	    if(e.stopPropagation) e.stopPropagation();
 	},
 	/*
 			Function: redirect

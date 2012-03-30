@@ -31,11 +31,11 @@
 	currentURL: '',
 		
 	_history: [],
+	
+	manageTitle: true,
 		
 	initialize: function ()
 	{
-		    
-		    
 	    this.prependToTitle = _d.title ;
 	    
 	    this._update() ;
@@ -77,8 +77,7 @@
 	    if ( main != null && this._urlMapping[main] != null )
 	    {
 		this._callMappedFunction(main);
-	    } else if ( this._urlMapping['index'] )
-{
+	    } else if ( this._urlMapping['index'] ) {
 		this._callMappedFunction('index');
 	    }
 	},
@@ -149,6 +148,11 @@
 			
 	setTitle: function ( title )
 	{
+	    if ( this.manageTitle == false )
+	    {
+		return; 
+	    }
+	    
 	    if ( title != null )
 	    {
 		if ( this.prependToTitle != '' )
