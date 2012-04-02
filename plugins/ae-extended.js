@@ -286,7 +286,7 @@
 				this.undelayed(60000,this._rdd);
 				this._rdi = false ;
 			}
-		},
+		}
 	}, k ;
 	
 	
