@@ -65,8 +65,6 @@
 			tabLayout.createAjaxTabs ( _u('.table-options',this._t.getParent(),false,false) ,el, true )
 			.createAjaxTabs ( _u('thead',this._t,false,false) , el, true )
 			.createAjaxTabs ( _u('ul',_u('tfoot',this._t)) ,el, true ) ;
-
-			this._f.getInput(0).focus () ;
 			
 			return el ;
 		},
@@ -74,8 +72,8 @@
 		_onKeyup: function (e)
 		{
 
-			ajsf.undelayed(700,this._del);
-			ajsf.delayed(700,this._del);
+			ajsf.undelayed(1200,this._del);
+			ajsf.delayed(1200,this._del);
 		},
 		submit: function ()
 		{

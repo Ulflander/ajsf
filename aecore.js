@@ -1656,15 +1656,17 @@
 		Parameters:
 			callback
      */
-		addWheelListener: function ( callback )
+		addWheelListener: function ( callback , container )
 		{
-			var e = (b.FF ? "DOMMouseScroll" : "mousewheel");
 
-			if (_d.attachEvent)
+			var c = container || _d ,
+				e = (b.FF ? "DOMMouseScroll" : "mousewheel");
+
+			if (c.attachEvent)
 			{
-				_d.attachEvent("on"+e, callback);
+				c.attachEvent("on"+e, callback);
 			} else if (_d.addEventListener){
-				_d.addEventListener(e, callback, false);
+				c.addEventListener(e, callback, false);
 			}
 				    
 		},
