@@ -1352,6 +1352,17 @@
 			return _d.location.href.split('#')[0];
 		} ) () ,
 		
+		URL2: (function(){
+			var script = _d.getElementById('js-aecore') ;
+			if ( script && script.getAttribute('data-base-url') )
+			{
+				return script.getAttribute('data-base-url') ;
+			} else {
+			    return _d.location.href.split('#')[0];
+			}
+			
+		} ) () ,
+		
 		/*
 			Variable: ROOT
 			
