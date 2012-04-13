@@ -37,7 +37,14 @@
 			
 			el.setAt('data-dyn-table','done');
 			
-			while ( el && el.getParent && !el.getParent().hasClass('ajsf-table-container') )
+			el = el.getParent () ;
+			
+			if ( el.toString() == '[object HTMLFormElement]' )
+			{
+				el = el.getParent () ;
+			}
+			
+			if ( el.getParent().hasClass('ajsf-table-container') )
 			{
 				el = el.getParent () ;
 			}
