@@ -1665,7 +1665,7 @@
 			if (c.attachEvent)
 			{
 				c.attachEvent("on"+e, callback);
-			} else if (_d.addEventListener){
+			} else if (c.addEventListener){
 				c.addEventListener(e, callback, false);
 			}
 				    
