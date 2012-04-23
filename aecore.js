@@ -1042,10 +1042,6 @@
 				while( o !== null && o !== parent ) {
 					r += o.offsetLeft;
 					
-					if (o != _d.body && o != _d.documentElement) {
-						r -= o.scrollLeft ;
-					}
-					
 					if ( abs === false )
 					{
 						break;
@@ -1055,9 +1051,45 @@
 					
 					while ( o2 && o2.parentNode!=o.offsetParent) {
 						o2 = o2.parentNode;
-						r -= o2.scrollLeft || 0 ;
 					}
 					
+					o = o.offsetParent;
+				}
+				return r;
+			},
+
+			/*
+			Function: getLeft
+
+			Returns the left position of the element relatively to the parent or relatively to the viewport
+
+			Parameters:
+				abs
+
+			Returns:
+	 */
+			getScrollLeft: function ( abs, parent )
+			{
+				var r = 0, o = this, o2;
+				while( o !== null && o !== parent ) {
+					r += o.offsetLeft;
+
+					if (o != _d.body && o != _d.documentElement) {
+						r -= o.scrollLeft ;
+					}
+
+					if ( abs === false )
+					{
+						break;
+					}
+
+					o2 = o ;
+
+					while ( o2 && o2.parentNode!=o.offsetParent) {
+						o2 = o2.parentNode;
+						r -= o2.scrollLeft || 0 ;
+					}
+
 					o = o.offsetParent;
 				}
 				return r;
@@ -1078,10 +1110,6 @@
 				while( o !== null && o !== parent ) {
 					
 					r += o.offsetTop;
-		    
-					if (o != ajsf.ROOT ) {
-						r += o.scrollTop ;
-					}
 					
 					if ( abs === false )
 					{
@@ -1092,9 +1120,46 @@
 					
 					while ( o2 && o2.parentNode!=o.offsetParent) {
 						o2 = o2.parentNode;
-						r += o2.scrollTop || 0 ;
 					}
 					
+					o = o.offsetParent;
+				}
+				return r;
+			},
+			/*
+			Function: getTop
+
+			Parameters:
+				abs
+
+		Returns:
+		the top position of the element relatively to the parent or relatively to the viewport
+	 */
+			getScrollTop: function ( abs , parent )
+			{
+				var r = 0, o = this, o2;
+
+				while( o !== null && o !== parent ) {
+
+					r += o.offsetTop;
+
+
+					if (o != _d.body && o != _d.documentElement) {
+						r -= o.scrollTop ;
+					}
+
+					if ( abs === false )
+					{
+						break;
+					}
+
+					o2 = o ;
+
+					while ( o2 && o2.parentNode!=o.offsetParent) {
+						o2 = o2.parentNode;
+						r += o2.scrollTop || 0 ;
+					}
+
 					o = o.offsetParent;
 				}
 				return r;
@@ -3265,7 +3330,7 @@
 				if (!_(obj).getTop) return false;
 				margin = margin || 0 ;
 		
-				var x = this.mouseX - obj.getLeft(true), y = this.mouseY - obj.getTop(true) ;
+				var x = this.mouseX - obj.getScrollLeft(true), y = this.mouseY - obj.getScrollTop(true) ;
 		
 				return ( x > 0 + margin && x < obj.w() - margin && y > 0 + margin && y < obj.h() - margin ) ;
 			},
