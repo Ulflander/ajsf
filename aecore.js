@@ -452,7 +452,7 @@
 			},
 	
 			/*
-			Funtion: prepend
+			Function: prepend
 			
 			Prepend some HTML content to the node
 			
@@ -884,7 +884,7 @@
 				return this.addListener(action, callback);
 			} ,
 			/*
-			Fuction: on
+			Function: on
 			
 			Alias of addListener
 			
@@ -898,9 +898,8 @@
 			on: function (action,callback) {
 				return this.addListener(action, callback);
 			} ,
-		
 			/*
-			Funcion: addListeners
+			Function: addListeners
 			
 			Adds many listeners on the element
 			
@@ -949,14 +948,30 @@
 				return ( this.dispatchEvent ? this.dispatchEvent(o) : _d.dispatchEvent ( o ) ) ;
 			},
 			/*
+			Function: prevent
+
+			Alias of <ajsf.prevent>
+
+			Parameters:
+				event - [Event] Event to be cancelled
+
+			Returns:
+			Current instance for chained command on this element
+			*/
+			prevent: function (event)
+			{
+
+			},
+			/*
 			Function: hasAt
 			
-			Convenient method to acces to hasAttribute method
+			Convenient method to access to hasAttribute method
 			
 			Parameters:
-				attrName
+				attrName - [String] Attribute to test
 				
 			Returns:
+			True if element has attribute, false otherwsie
 	 */
 			hasAt: function (attrName) {
 				return (this.hasAttribute ? this.hasAttribute(attrName) : this.getAttribue(attrName) !== undefined );
@@ -966,7 +981,13 @@
 			
 			Check many attributes in one call
 			
+			Parameters:
+				attrName - [String] Attribute name to test
+				attrName2 - [String] Attribute name to test
+				attrName3 - [String] ...
+
 			Returns:
+			True if element has all attribute, false otherwsie
 	 */
 			hasAts: function () {
 				var i = 0, l = arguments.length ;
@@ -985,9 +1006,10 @@
 			Convenient method to acces to getAttribute method
 			
 			Parameters:
-				attrName
+				attrName - [String] Attribute to get
 			
 			Returns:
+			Value of attribute
 	 */
 			getAt: function (attrName) {
 				return this.getAttribute(attrName);
@@ -1032,9 +1054,11 @@
 			Returns the left position of the element relatively to the parent or relatively to the viewport
 		
 			Parameters:
-				abs
+				abs - [boolean] Absolute or relative to parent. Default: absolute
+				parent - [DOMElement] Any parent element for relative position. Default: first parent or viewport depending on abs param.
 				
 			Returns:
+			Value of left position
 	 */
 			getLeft: function ( abs, parent )
 			{
@@ -1059,14 +1083,16 @@
 			},
 
 			/*
-			Function: getLeft
+			Function: getScrollLeft
 
-			Returns the left position of the element relatively to the parent or relatively to the viewport
+			Returns the left position of the element relatively to the parent or relatively to the viewport, including inner scroll positions
 
 			Parameters:
-				abs
+				abs - [boolean] Absolute or relative to parent. Default: absolute
+				parent - [DOMElement] Any parent element for relative position. Default: first parent or viewport depending on abs param.
 
 			Returns:
+			Value of left position, inner scolls dependant
 	 */
 			getScrollLeft: function ( abs, parent )
 			{
@@ -1096,12 +1122,15 @@
 			},
 			/*
 			Function: getTop
-		
+
+			Get the top position of the element relatively to the parent or relatively to the viewport, including inner scroll positions
+
 			Parameters:
-				abs
-				
-		Returns:
-		the top position of the element relatively to the parent or relatively to the viewport
+				abs - [boolean] Absolute or relative to parent. Default: absolute
+				parent - [DOMElement] Any parent element for relative position. Default: first parent or viewport depending on abs param.
+
+			Returns:
+			Value of top position
 	 */
 			getTop: function ( abs , parent )
 			{
@@ -1127,14 +1156,17 @@
 				return r;
 			},
 			/*
-			Function: getTop
+			Function: getScrollTop
+
+			Get the top position of the element relatively to the parent or relatively to the viewport
 
 			Parameters:
-				abs
+				abs - [boolean] Absolute or relative to parent. Default: absolute
+				parent - [DOMElement] Any parent element for relative position. Default: first parent or viewport depending on abs param.
 
-		Returns:
-		the top position of the element relatively to the parent or relatively to the viewport
-	 */
+			Returns:
+			Value of top position, inner scolls dependant
+		*/
 			getScrollTop: function ( abs , parent )
 			{
 				var r = 0, o = this, o2;
@@ -1166,27 +1198,29 @@
 			},
 			/*
 			Function: right
-			
+
 			Parameters:
-				abs
+				abs - [boolean] Absolute or relative to parent. Default: absolute
+				parent - [DOMElement] Any parent element for relative position. Default: first parent or viewport depending on abs param.
 				
 			Returns:
 			the right position of the element relatively to the viewport
 	 */
-			right: function ( abs , parent)
+			right: function ( abs , parent )
 			{
 				return (this.getLeft(abs, parent) + this.offsetWidth) ;
 			},
 			/*
 			Function: bottom
-		
+
 			Parameters:
-				abs
+				abs - [boolean] Absolute or relative to parent. Default: absolute
+				parent - [DOMElement] Any parent element for relative position. Default: first parent or viewport depending on abs param.
 			
 			Returns:
 			the bottom position of the element relatively to the viewport
 	 */
-			bottom: function ( abs , parent)
+			bottom: function ( abs , parent )
 			{
 				return (this.getTop(abs, parent) + this.offsetHeight );
 			},
@@ -1423,7 +1457,7 @@
 			{
 				return script.getAttribute('data-base-url') ;
 			} else {
-			    return _d.location.href.split('#')[0];
+				return _d.location.href.split('#')[0];
 			}
 			
 		} ) () ,
@@ -1725,7 +1759,7 @@
 		{
 
 			var c = container || _d ,
-				e = (b.FF ? "DOMMouseScroll" : "mousewheel");
+			e = (b.FF ? "DOMMouseScroll" : "mousewheel");
 
 			if (c.attachEvent)
 			{
