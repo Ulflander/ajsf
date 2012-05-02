@@ -134,8 +134,8 @@
 				
 				this._e.dispatch('dragstart') ;
 				
-				this._ml = ajsf.mouse.mouseX - this._e.getLeft(true);
-				this._mt = ajsf.mouse.mouseY - this._e.getTop(true);
+				this._ml = ajsf.mouse.mouseX - this._e.getScrollLeft(true);
+				this._mt = ajsf.mouse.mouseY - this._e.getScrollTop(true);
 			}
 	
 		},
@@ -165,8 +165,8 @@
 				return ;
 			}
 	
-			x = x - p.getLeft(true) - this._ml ;
-			y = y - p.getTop(true) - this._mt ;
+			x = x - p.getScrollLeft(true) - this._ml ;
+			y = y - p.getScrollTop(true) - this._mt ;
 	
 			this._checkBoundsAndSetPos ( x , y ) ;
 	
@@ -184,8 +184,8 @@
 		
 		_checkBoundsAndSetPos: function ( x, y )
 		{
-			x = x || this._e.getLeft (false);
-			y = y || this._e.getTop (false);
+			x = x || this._e.getScrollLeft (false);
+			y = y || this._e.getScrollTop (false);
 	
 			
 			if ( y < this._t )
@@ -280,8 +280,8 @@
 			for(k ; k < l ; k ++ )
 			{
 				e = this._containers[k];
-				x1 = e.getLeft (true) ; 
-				y1 = e.getTop (true) ;
+				x1 = e.getScrollLeft (true) ; 
+				y1 = e.getScrollTop (true) ;
 				
 				if ( x > x1 && x < x1 + e.w() && y > y1 && y < y1 + e.h() )
 				{
